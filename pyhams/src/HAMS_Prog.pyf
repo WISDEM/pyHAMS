@@ -1,0 +1,10 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module libhams ! in 
+    interface  ! in :libhams
+    end interface 
+end python module libhams
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
