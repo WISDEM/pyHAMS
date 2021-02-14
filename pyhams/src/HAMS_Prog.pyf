@@ -3,6 +3,23 @@
 
 python module libhams ! in 
     interface  ! in :libhams
+        module hams_lib ! in :libhams:HAMS_Prog.f90
+            subroutine exec ! in :libhams:HAMS_Prog.f90:hams_lib
+                use assbmatx
+                use assbmatx_irr
+                use calgreenfunc
+                use readpanelmesh
+                use linearmatrix_mod
+                use hydrostatic
+                use implementsubs
+                use potentwavforce
+                use printoutput
+                use potentials_mod
+                use pressureelevation
+                use fieldoutput_mod
+                use omp_lib
+            end subroutine exec
+        end module hams_lib
     end interface 
 end python module libhams
 

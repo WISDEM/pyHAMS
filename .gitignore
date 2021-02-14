@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Fortran compiled
+*.o
+*.mod
+
 # Distribution / packaging
 .Python
 build/
