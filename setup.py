@@ -4,7 +4,7 @@
 import setuptools #import setup
 from numpy.distutils.core import setup, Extension
 import os
-import subprocess
+import platform
 
 os.environ['NPY_DISTUTILS_APPEND_FLAGS'] = '1'
 
@@ -36,14 +36,10 @@ f90src = ['WavDynMods.f90',
 root_dir = os.path.join('pyhams','src')
 
 pyhamsExt = Extension('pyhams.libhams', sources=[os.path.join(root_dir,m) for m in f90src],
-                      extra_f90_compile_args=['-O3','-m64','-fPIC','-fno-align-commons','-fdec-math','-fimplicit-none'],
+                      extra_f90_compile_args=['-O3','-m64','-fPIC','-fno-align-commons','-fdec-math'],
                       libraries=['lapack'],
                       extra_link_args=['-fopenmp'])
-
-orig_dir = os.getcwd()
-os.chdir(root_dir)
-subprocess.run('make')
-os.chdir(orig_dir)
+extlist = [] if platform.system() == 'Windows' else [pyhamsExt]
 
 setup(
     name='pyHAMS',
@@ -54,7 +50,7 @@ setup(
     license='Apache License, Version 2.0',
     package_data={'pyhams': []},
     packages=['pyhams'],
-    ext_modules=[pyhamsExt],
+    ext_modules=extlist,
 )
 
 

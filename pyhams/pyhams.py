@@ -1,8 +1,12 @@
 import os
 import os.path as osp
-import sys
-import subprocess as sub
+import platform
 import numpy as np
+
+if not platform.system() == 'Windows':
+    import pyhams.libhams as hams
+else:
+    import subprocess as sub
 
 def nemohmesh_to_pnl(nemohMeshPath, writeDir=None):
     '''
@@ -448,6 +452,9 @@ def run_hams(projectDir):
     workingDir = os.getcwd()
     os.chdir(projectDir)
     # run HAMS
-    sub.run([f'{hamsPath}'])
+    if platform.system() == 'Windows':
+        sub.run([f'{hamsPath}'])
+    else:
+        hams.hams_lib.exec()
     # change back to working directory
     os.chdir(workingDir)
