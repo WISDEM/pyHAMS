@@ -19,7 +19,7 @@ endif
 
 ifeq ($(FC), ifort)
 	FLFLAGS = -g -m64 -fopenmp -mkl
-	FCFLAGS = -g -m64 -c -O3 -fPIC -check=bounds,pointers,recursion -warn=all -mkl
+	FCFLAGS = -g -m64 -c -O3 -fPIC -check bounds,pointers -warn all -mkl
 	LDCOMP  = -mkl
 else
 	FLFLAGS = -g -m64 -fopenmp -fbacktrace
