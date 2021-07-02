@@ -346,32 +346,70 @@ def read_wamit1B(pathWamit1, TFlag=0):
     Read added mass and damping from .1 file (WAMIT format)
     '''
     pathWamit1 = osp.normpath(pathWamit1)
-    # Check if the file contains the infinite and zero frequency points
-    try:
-        freq_test = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=72)
-        if np.array_equal(np.unique(freq_test[:,0]), np.array([-1.0, 0.0])):
-            other_freqs = np.loadtxt(pathWamit1, usecols=(0,1,2,3,4), skiprows=72)
-            freq_test = np.c_[freq_test, np.nan*np.ones(72)]
-            wamit1 = np.vstack((freq_test, other_freqs))
-        else:
-            wamit1 = np.loadtxt(pathWamit1)
-    except:
-        wamit1 = np.loadtxt(pathWamit1)
-    # <<<<<< NEED TO MAKE SURE THAT YOU HAVE DELETED THE HYDROSTATIC PART OUT OF THE .1 FILE
-    # SO THAT THERE IS THE SAME NUMBER OF COLUMNS FOR EVERY ROW IN THE FILE >>>>>>>>>>>>>>>>
-    # can add in functionality to make a hydrostatic matrix, but not needed yet
+    #wamit1 = np.loadtxt(pathWamit1)
     
+    # If they are in the .1 wamit file,
+    # Check to make sure that the zero- and infinite-frequency added mass terms are accounted for
+    f = open(pathWamit1, 'r')
+    # Save the A0 and Ainf data and delete them from the .1 file so that the rest can be read easily
+    # Initialize some lists
+    freq = []; i = []; j = []; ainf = []; freq0 = []; i0 = []; j0 = []; a0 = [];
+    for line in f:                                  # for each line in the .1 file
+        if line=="\n":
+            pass                                    # skip if the line has nothing in it
+        else:
+            data = line.split()
+            if len(data) < 5:                       # if the line has less than 5 terms, it's either Ainf or A0
+                if float(data[0]) < 0.0:            # if the line is an Ainf term
+                    freq.append(float(data[0]))
+                    i.append(int(data[1]))
+                    j.append(int(data[2]))
+                    ainf.append(float(data[3]))
+                elif float(data[0]) == 0.0:         # if the line is an A0 term
+                    freq0.append(float(data[0]))
+                    i0.append(int(data[1]))
+                    j0.append(int(data[2]))
+                    a0.append(float(data[3]))
+    # Create the zero- and infinite-frequency added mass matrices
+    Ainf = np.zeros([6,6])
+    A0 = np.zeros([6,6])
+    if ainf:
+        for k in range(len(i)):
+            Ainf[i[k]-1,j[k]-1] = ainf[k]
+        for k in range(len(i0)):
+            A0[i0[k]-1,j0[k]-1] = a0[k]
+    f.close()                                       # need to close out of the file
+    
+    f = open(pathWamit1, 'r')                       # and then reopen to allow readlines() to work
+    lines = f.readlines()                           # save the whole file into the 'lines' variable
+    f.close()                                       # close the file
+    
+    # count the number of lines that include an A0 or Ainf term
+    count = 0
+    for line in lines:
+        if len(line.split()) < 5:
+            count += 1
+    
+    # delete the lines that include an A0 or Ainf term
+    for i in range(count):
+        del lines[0]
+    
+
+    # reload the rest of the lines variable into a readable matrix for the rest of the function    
+    #wamit1 = np.loadtxt(pathWamit1)
+    wamit1 = np.loadtxt(lines)
+    
+    # ------------------------------------------------------------
+    
+    T = np.unique(wamit1[:,0])
     if TFlag:   # if TFlag=1, the first column values are periods
-        T = np.unique(wamit1[:,0])
-        T[T==0.0] = np.inf
-        w = 2*np.pi/np.flip(T)
+        w = 2*np.pi/T
     else:       # if TFlag=0, the first column values are frequencies
-        w = np.unique(wamit1[:,0])
-        
+        w = T
     addedMassCol = wamit1[:,3]
     dampingCol = wamit1[:,4]
-    matRow = np.int_(wamit1[:,1])
-    matCol = np.int_(wamit1[:,2])
+    matRow = wamit1[:,1]
+    matCol = wamit1[:,2]
     addedMass = np.zeros([len(w),6,6])
     damping = np.zeros([len(w),6,6])
     
@@ -380,14 +418,14 @@ def read_wamit1B(pathWamit1, TFlag=0):
     x = int(nA/nw)
     for j in range(len(w)):
         for i in range(x):
-            addedMass[j,matRow[i]-1,matCol[i]-1] = addedMassCol[i+x*j]
-            damping[j,matRow[i]-1,matCol[i]-1] = dampingCol[i+x*j]
+            addedMass[j,int(matRow[i])-1,int(matCol[i])-1] = addedMassCol[i+x*j]
+            damping[j,int(matRow[i])-1,int(matCol[i])-1] = dampingCol[i+x*j]
     
     # transpose(a,b,c) function switches the sizes in an order of k[a] to the 0 spot, k[b] to the 1 spot, and k[c] to the 2 spot
     A = addedMass.transpose(1,2,0) # transposes addedMass.shape = (100,6row,6col) to (6row,6col,100)
     B = damping.transpose(1,2,0)
-        
-    return A, B, w
+    
+    return A, B, w      # can return Ainf and A0 here too
 
 def read_wamit3(pathWamit3):
     '''
