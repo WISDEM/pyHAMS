@@ -5,7 +5,8 @@ channels:
   - defaults
 
 dependencies:
-  - python
-  - setuptools
+  - meson
   - numpy
   - pip
+  - python
+  - setuptools
