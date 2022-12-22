@@ -32,7 +32,7 @@ class CertTest(unittest.TestCase):
                                       dampingLin=dampingLin, dampingQuad=dampingQuad,
                                       kHydro=kHydro, kExt=kExt)
         pyhams.write_control_file(projectDir=mypath, waterDepth=10.0, incFLim=1, iFType=1, oFType=4, numFreqs=-30,
-                                  minFreq=0.1, dFreq=0.1, numHeadings=-36,
+                                  minFreq=0.1, dFreq=0.1, numHeadings=36,
                                   minHeading=0.0, dHeading=10.0,
                                   refBodyCenter=[0.0, 0.0, 0.0], refBodyLen=1.0, irr=1,
                                   numThreads=6)
