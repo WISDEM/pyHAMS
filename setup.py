@@ -56,7 +56,7 @@ def copy_shared_libraries():
     for root, _dirs, files in os.walk(build_path):
         for file in files:
             # move pyhams to just under staging_dir
-            if file.endswith((".so", ".lib", ".pyd", ".pdb", ".dylib", ".dll")):
+            if file.endswith((".so", ".lib", ".pyd", ".pdb", ".dylib", ".dll", ".mod")):
                 if ".so.p" in root or ".pyd.p" in root:  # excludes intermediate object files
                     continue
                 file_path = os.path.join(root, file)
