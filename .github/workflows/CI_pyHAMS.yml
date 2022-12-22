@@ -35,6 +35,11 @@ jobs:
               run: |
                   pip install -e .
 
+            - name: Test run
+              run: |
+                  cd test
+                  python test_cylinder.py
+
 
     build_conda:
         name: Conda Build (${{ matrix.os }}) - ${{ matrix.python-version }}
@@ -68,4 +73,9 @@ jobs:
             - name: Conda Install pyHAMS
               run: |
                   python setup.py develop
+
+            - name: Test run
+              run: |
+                  cd test
+                  python test_cylinder.py
 
