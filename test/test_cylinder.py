@@ -1,8 +1,8 @@
-
+import os
 import unittest
 import numpy as np
 import numpy.testing as npt
-
+from io import StringIO
 import pyhams.pyhams as pyhams
 
 
@@ -25,7 +25,7 @@ class CertTest(unittest.TestCase):
                            [ 0.00000E+00,   0.00000E+00,   0.67571E-12,  -0.15694E-12,   0.97116E+04,   0.53473E-12],
                            [ 0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00]])
         kExt = np.zeros((6,6))
-
+        
         mypath = 'Cylinder'
         pyhams.create_hams_dirs(baseDir=mypath)
         pyhams.write_hydrostatic_file(projectDir=mypath, cog=cog, mass=mass,
@@ -37,10 +37,26 @@ class CertTest(unittest.TestCase):
                                   refBodyCenter=[0.0, 0.0, 0.0], refBodyLen=1.0, irr=1,
                                   numThreads=6)
         pyhams.run_hams(mypath)
-        #addedMass, damping, w = pyhams.read_wamit1(pathWamit1)
-        #mod, phase, real, imag, w, headings = pyhams.read_wamit1(pathWamit3)
-        #npt.assert_array_equal(disp.node[iCase, :], node)
-        #npt.assert_array_almost_equal(disp.dx[iCase, :], dx, decimal=6)
+
+        # Ensure reading goes smoothly
+        pathWamit1 = os.path.join(mypath, 'Output', 'Wamit_format', 'Buoy.1')
+        pathWamit3 = os.path.join(mypath, 'Output', 'Wamit_format', 'Buoy.3')
+        addedMass, damping, w = pyhams.read_wamit1(pathWamit1)
+        mod, phase, real, imag, w, headings = pyhams.read_wamit3(pathWamit3)
+
+        actual1 = np.loadtxt(pathWamit1, skiprows=72)
+        actual3 = np.loadtxt(pathWamit3)
+        truth1 = np.loadtxt(os.path.join(mypath, 'truth', 'Buoy.1'))
+        truth3 = np.loadtxt(os.path.join(mypath, 'truth', 'Buoy.3'))
+
+        # Test freqs
+        npt.assert_array_almost_equal(np.unique(truth1[:,0]), np.unique(actual1[:,0]))
+        npt.assert_array_almost_equal(np.unique(truth1[:,0]), w)
+
+        # Added mass and damping
+        npt.assert_array_almost_equal(truth1, actual1)
+        
+        #npt.assert_array_almost_equal(truth3, actual3)
 
 
 def suite():
