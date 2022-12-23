@@ -1,9 +1,9 @@
 !    -*- f90 -*-
 ! Note: the context of this file is case sensitive.
 
-python module libhams ! in 
+python module _hams ! in 
     interface  ! in :libhams
-        module hams_lib ! in :libhams:HAMS_Prog.f90
+        module hams_full ! in :libhams:HAMS_Prog.f90
             subroutine exec ! in :libhams:HAMS_Prog.f90:hams_lib
                 use assbmatx
                 use assbmatx_irr
@@ -19,9 +19,9 @@ python module libhams ! in
                 use fieldoutput_mod
                 use omp_lib
             end subroutine exec
-        end module hams_lib
+        end module hams_full
     end interface 
-end python module libhams
+end python module _hams
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/
