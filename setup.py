@@ -101,6 +101,9 @@ if __name__ == "__main__":
         license='Apache License, Version 2.0',
         install_requires=[
             "numpy",
+            "meson",
+            "ninja",
+            "chardet",
         ],
         extras_require={
             "testing": ["pytest"],
