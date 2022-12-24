@@ -75,6 +75,14 @@ setup(
     author='NREL WISDEM Team',
     author_email='systems.engineering@nrel.gov',
     license='Apache License, Version 2.0',
+    install_requires=[
+        "numpy",
+        "setuptools",
+    ],
+    extras_require={
+        "testing": ["pytest"],
+    },
+    python_requires=">=3.8",
     package_data={'pyhams': []},
     packages=['pyhams'],
     ext_modules=extlist,
