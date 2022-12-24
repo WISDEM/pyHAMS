@@ -29,7 +29,7 @@ jobs:
 
             - name: Pip Install pyHAMS
               run: |
-                  pip install -e .
+                  pip install -v -e .
 
             - name: Test run
               run: |
@@ -74,7 +74,7 @@ jobs:
             # Install 
             - name: Conda Install pyHAMS
               run: |
-                  python setup.py develop
+                  pip install -v -e .
 
             - name: Test run
               run: |

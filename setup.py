@@ -103,7 +103,6 @@ if __name__ == "__main__":
             "numpy",
             "meson",
             "ninja",
-            "chardet",
         ],
         extras_require={
             "testing": ["pytest"],
