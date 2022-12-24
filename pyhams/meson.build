@@ -49,7 +49,7 @@ py3.extension_module('_hams',
                      hams_connect,
                      fortranobject_c,
                      include_directories: inc_np,
-                     dependencies : [py3_dep, lapack],
+                     dependencies : [py3_dep, lapack, omp],
                      subdir: 'pyhams',
 		     link_language: 'fortran',
                      install : true)

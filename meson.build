@@ -28,25 +28,29 @@ is_windows = host_machine.system() == 'windows'
 
 # Adding at project level causes many spurious -lgfortran flags.
 _fflags = []
-_ldflags = ['-fopenmp']
 if ff.get_id() == 'gcc'
   _fflags = ff.get_supported_arguments('-fdec-math')
   _fflags += ff.get_supported_arguments('-fno-align-commons')
-  #_ldflags += ['-llapack']
 endif
 if ff.get_id() == 'intel'
   _fflags = ff.get_supported_arguments('-mkl')
-  #_ldflags = ['-lmkl_rt']
 elif ff.get_id() == 'intel-cl'
   # Intel Fortran on Windows does things differently, so deal with that
   # (also specify dynamic linking and the right name mangling)
   _fflags = ff.get_supported_arguments('/mkl')
-  #_ldflags += ['-lmkl_rt']
 endif
 add_project_arguments(_fflags, language: 'fortran')
-add_project_link_arguments(_ldflags, language: ['fortran'])
-
-lapack = dependency(['openblas', 'OpenBLAS'])
+omp = dependency('openmp')
+lapack = dependency('openblas', required: false)
+if not lapack.found()
+  lapack = fc.find_library('openblas')
+endif
+if not lapack.found()
+  lapack = dependency('lapack', required: false)
+endif
+if not lapack.found()
+  lapack = fc.find_library('lapack')
+endif
 
 # https://mesonbuild.com/Python-module.html
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
