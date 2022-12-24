@@ -56,13 +56,13 @@ endif
 if fc.get_id() == 'gcc'
   lapack = dependency('openblas', required: false)
   if not lapack.found()
-    lapack = fc.find_library('openblas')
+    lapack = fc.find_library('openblas', required: false)
   endif
   if not lapack.found()
     lapack = dependency('lapack', required: false)
   endif
   if not lapack.found()
-    lapack = fc.find_library('lapack')
+    lapack = fc.find_library('lapack', required: false)
   endif
   if not lapack.found()
     lapack = declare_dependency(
@@ -74,6 +74,11 @@ if fc.get_id() == 'intel'
   lapack = dependency('mkl', required: false)
   if not lapack.found()
     lapack = fc.find_library('mkl_rt')
+  endif
+  if not lapack.found()
+    lapack = declare_dependency(
+      link_args: '-lmkl_rt',
+    )
   endif
 endif
 
