@@ -14,7 +14,7 @@ project(
 
 cc = meson.get_compiler('c')
 add_languages('fortran', native: false)
-ff = meson.get_compiler('fortran')
+fc = meson.get_compiler('fortran')
 
 # We need -lm for all C code (assuming it uses math functions, which is safe to
 # assume for SciPy). For C++ it isn't needed, because libstdc++/libc++ is
@@ -28,28 +28,53 @@ is_windows = host_machine.system() == 'windows'
 
 # Adding at project level causes many spurious -lgfortran flags.
 _fflags = []
-if ff.get_id() == 'gcc'
-  _fflags = ff.get_supported_arguments('-fdec-math')
-  _fflags += ff.get_supported_arguments('-fno-align-commons')
+if fc.get_id() == 'gcc'
+  _fflags = fc.get_supported_arguments('-fdec-math')
+  _fflags += fc.get_supported_arguments('-fno-align-commons')
 endif
-if ff.get_id() == 'intel'
-  _fflags = ff.get_supported_arguments('-mkl')
-elif ff.get_id() == 'intel-cl'
+if fc.get_id() == 'intel'
+  _fflags = fc.get_supported_arguments('-mkl')
+elif fc.get_id() == 'intel-cl'
   # Intel Fortran on Windows does things differently, so deal with that
   # (also specify dynamic linking and the right name mangling)
-  _fflags = ff.get_supported_arguments('/mkl')
+  _fflags = fc.get_supported_arguments('/mkl')
 endif
 add_project_arguments(_fflags, language: 'fortran')
-omp = dependency('openmp')
-lapack = dependency('openblas', required: false)
-if not lapack.found()
-  lapack = fc.find_library('openblas')
+omp = dependency('openmp', required: false)
+if not omp.found()
+  if fc.get_id() == 'intel'
+    omp = declare_dependency(
+      link_args: '-qopenmp',
+    )
+  else
+    omp = declare_dependency(
+      link_args: '-fopenmp',
+    )
+  endif
 endif
-if not lapack.found()
-  lapack = dependency('lapack', required: false)
+
+if fc.get_id() == 'gcc'
+  lapack = dependency('openblas', required: false)
+  if not lapack.found()
+    lapack = fc.find_library('openblas')
+  endif
+  if not lapack.found()
+    lapack = dependency('lapack', required: false)
+  endif
+  if not lapack.found()
+    lapack = fc.find_library('lapack')
+  endif
+  if not lapack.found()
+    lapack = declare_dependency(
+      link_args: '-llapack',
+    )
+  endif
 endif
-if not lapack.found()
-  lapack = fc.find_library('lapack')
+if fc.get_id() == 'intel'
+  lapack = dependency('mkl', required: false)
+  if not lapack.found()
+    lapack = fc.find_library('mkl_rt')
+  endif
 endif
 
 # https://mesonbuild.com/Python-module.html
