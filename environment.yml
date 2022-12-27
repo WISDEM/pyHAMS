@@ -5,8 +5,10 @@ channels:
   - defaults
 
 dependencies:
-  - liblapack
-  - python
-  - setuptools
+  - openblas
+  - meson
+  - ninja
   - numpy
   - pip
+  - python
+  - setuptools

@@ -2,7 +2,7 @@ import os
 import unittest
 import numpy as np
 import numpy.testing as npt
-from io import StringIO
+
 import pyhams.pyhams as pyhams
 
 
@@ -25,7 +25,7 @@ class CertTest(unittest.TestCase):
                            [ 0.00000E+00,   0.00000E+00,   0.67571E-12,  -0.15694E-12,   0.97116E+04,   0.53473E-12],
                            [ 0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00]])
         kExt = np.zeros((6,6))
-        
+
         mypath = 'Cylinder'
         pyhams.create_hams_dirs(baseDir=mypath)
         pyhams.write_hydrostatic_file(projectDir=mypath, cog=cog, mass=mass,
@@ -57,6 +57,7 @@ class CertTest(unittest.TestCase):
         npt.assert_array_almost_equal(truth1, actual1)
         
         #npt.assert_array_almost_equal(truth3, actual3)
+
 
 
 def suite():
