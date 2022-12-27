@@ -166,11 +166,10 @@ if __name__ == "__main__":
 #    mylib = ['lapack']
 #    mylink = []
 
+
 #pyhamsExt = Extension('pyhams.libhams', sources=[os.path.join(root_dir,m) for m in f90src],
 #                      extra_compile_args=mycargs+myargs,
 #                      extra_f90_compile_args=myfargs+myargs,
 #                      libraries=mylib,
 #                      extra_link_args=['-fopenmp']+mylink)
 #extlist = [] if platform.system() == 'Windows' else [pyhamsExt]
-
-
