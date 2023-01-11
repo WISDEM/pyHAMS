@@ -15,6 +15,7 @@ project(
 cc = meson.get_compiler('c')
 add_languages('fortran', native: false)
 fc = meson.get_compiler('fortran')
+is_windows = host_machine.system() == 'windows'
 
 # We need -lm for all C code (assuming it uses math functions, which is safe to
 # assume for SciPy). For C++ it isn't needed, because libstdc++/libc++ is
@@ -23,8 +24,6 @@ m_dep = cc.find_library('m', required : false)
 if m_dep.found()
   add_project_link_arguments('-lm', language : 'c')
 endif
-
-is_windows = host_machine.system() == 'windows'
 
 # Adding at project level causes many spurious -lgfortran flags.
 _fflags = []
@@ -86,7 +85,11 @@ endif
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
 # when cross compiling like on conda-forge
 py_mod = import('python')
-py3 = py_mod.find_installation('python')
+if get_option('python_target') != ''
+  py3 = py_mod.find_installation(get_option('python_target'))
+else
+  py3 = py_mod.find_installation('python')
+endif
 py3_dep = py3.dependency()
 
 message(py3.path())
