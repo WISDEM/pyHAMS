@@ -27,10 +27,10 @@ jobs:
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v4
+              id: cp
               with:
                   python-version: ${{ matrix.python-version }}
                   update-environment: true
-                  id: cp
 
             - name: Pip Install pyHAMS
               run: |
