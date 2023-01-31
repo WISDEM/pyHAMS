@@ -32,6 +32,9 @@ jobs:
                   python-version: ${{ matrix.python-version }}
                   update-environment: true
 
+            - name: Setup tmate session
+              uses: mxschmitt/action-tmate@v3
+              
             - name: Pip Install pyHAMS
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
