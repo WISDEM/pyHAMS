@@ -39,7 +39,7 @@ jobs:
             - name: Test run
               run: |
                   cd test
-                  '${{ steps.cp.outputs.python-path }} test_cylinder.py
+                  '${{ steps.cp.outputs.python-path }}' test_cylinder.py
 
 
     build_conda:
