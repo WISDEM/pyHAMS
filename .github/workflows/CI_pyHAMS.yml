@@ -33,6 +33,8 @@ jobs:
                   update-environment: true
 
             - name: Pip Install pyHAMS
+              env:
+                  MESON_ARGS: -Dpython_target='${{ steps.cp.outputs.python-path }}'
               run: |
                   '${{ steps.cp.outputs.python-path }}' -m pip install -vv -e .
 
