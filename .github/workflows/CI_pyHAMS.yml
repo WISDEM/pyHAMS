@@ -32,7 +32,7 @@ jobs:
 
             - name: Pip Install pyHAMS
               run: |
-                  pip install -vv -e .
+                  python -m pip install -vv -e .
 
             - name: Test run
               run: |
