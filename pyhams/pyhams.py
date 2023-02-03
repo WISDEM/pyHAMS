@@ -206,7 +206,7 @@ def write_hydrostatic_file(projectDir=None, cog=np.zeros(3), mass=np.zeros((6,6)
 
 def write_control_file(projectDir=None, waterDepth=50.0, incFLim=1, iFType=3, oFType=3, numFreqs=-300,
                        minFreq=0.02, dFreq=0.02, freqList=None, numHeadings=1,
-                       minHeading=0.0, dHeading=0.0,
+                       minHeading=0.0, dHeading=0.0, headingList=None,
                        refBodyCenter=[0.0, 0.0, 0.0], refBodyLen=1.0, irr=0,
                        numThreads=8):
     '''
@@ -252,6 +252,8 @@ def write_control_file(projectDir=None, waterDepth=50.0, incFLim=1, iFType=3, oF
         minimum heading value (degs)
     dHeading: float
         heading step (degs)
+    headingList: list
+        list of headings    
     refBodyCenter: list
         reference body center
     refBodyLen: float
@@ -293,12 +295,19 @@ def write_control_file(projectDir=None, waterDepth=50.0, incFLim=1, iFType=3, oF
         f.write(f'    Frequency_step          {dFreq}D0\n')
     f.write('   #End Definition of Wave Frequencies\n\n')
     f.write('   #Start Definition of Wave Headings\n')
-    f.write(f'    Number_of_headings      -{numHeadings}\n')
-    f.write(f'    Minimum_heading         {minHeading}D0\n')
-    f.write(f'    Heading_step            {dHeading}D0\n')
+    f.write(f'    Number_of_headings      {numHeadings}\n')
+    if not headingList is None and numHeadings > 0:
+        # f.write(str(np.array(headingList)).replace('[','').replace(']','').replace('\n','')+'\n') # This also works, but it is not exactly in the format shown in HAMS examples
+        f.write('    ')
+        for heading in headingList:
+            f.write(f'{heading:.2f}D0 ') # -ve for min & step, +ve for list of frequencies (or periods)
+        f.write('\n')
+    else:
+        f.write(f'    Minimum_heading         {minHeading:.2f}D0\n')
+        f.write(f'    Heading_step            {dHeading:.2f}D0\n')
     f.write('   #End Definition of Wave Headings\n\n')
     f.write(f'    Reference_body_center   {refBodyCenter[0]:.3f}         {refBodyCenter[1]:.3f}         {refBodyCenter[2]:.3f}\n')
-    f.write(f'    Reference_body_length   {refBodyLen}D0\n')
+    f.write(f'    Reference_body_length  {refBodyLen}D0\n')
     f.write('    Wave-diffrac-solution   2\n')
     f.write(f'    If_remove_irr_freq      {irr}\n')
     f.write(f'    Number of threads       {numThreads}\n\n')
