@@ -26,7 +26,7 @@ class CertTest(unittest.TestCase):
                            [ 0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00]])
         kExt = np.zeros((6,6))
 
-        mypath = 'test/Cylinder'
+        mypath = 'Cylinder'
         pyhams.create_hams_dirs(baseDir=mypath)
         pyhams.write_hydrostatic_file(projectDir=mypath, cog=cog, mass=mass,
                                       dampingLin=dampingLin, dampingQuad=dampingQuad,
