@@ -25,15 +25,16 @@ class CertTest(unittest.TestCase):
                            [ 0.00000E+00,   0.00000E+00,   0.67571E-12,  -0.15694E-12,   0.97116E+04,   0.53473E-12],
                            [ 0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00,   0.00000E+00]])
         kExt = np.zeros((6,6))
+        headingList = [0, 5, 10, 30, 60, 90, 180]
 
-        mypath = 'test/Cylinder'
+        mypath = 'Cylinder_headings'
         pyhams.create_hams_dirs(baseDir=mypath)
         pyhams.write_hydrostatic_file(projectDir=mypath, cog=cog, mass=mass,
                                       dampingLin=dampingLin, dampingQuad=dampingQuad,
                                       kHydro=kHydro, kExt=kExt)
         pyhams.write_control_file(projectDir=mypath, waterDepth=10.0, incFLim=1, iFType=1, oFType=4, numFreqs=-30,
-                                  minFreq=0.1, dFreq=0.1, numHeadings=-36,
-                                  minHeading=0.0, dHeading=10.0,
+                                  minFreq=0.1, dFreq=0.1, numHeadings=len(headingList),
+                                  headingList=headingList,
                                   refBodyCenter=[0.0, 0.0, 0.0], refBodyLen=1.0, irr=1,
                                   numThreads=6)
         pyhams.run_hams(mypath)
