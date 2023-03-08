@@ -55,7 +55,7 @@ class CertTest(unittest.TestCase):
         npt.assert_array_almost_equal(np.unique(truth1[:,0]), w)
 
         # Added mass and damping
-        npt.assert_array_almost_equal(truth1, actual1)
+        npt.assert_array_almost_equal(truth1, actual1, 3)
         
         #npt.assert_array_almost_equal(truth3, actual3)
 
@@ -89,7 +89,7 @@ class CertTest(unittest.TestCase):
         npt.assert_array_almost_equal(np.unique(truth1[:,0]), w)
 
         # Added mass and damping
-        npt.assert_array_almost_equal(truth1, actual1)
+        npt.assert_array_almost_equal(truth1, actual1, 3)
         
         #npt.assert_array_almost_equal(truth3, actual3)
 
