@@ -53,20 +53,14 @@ if not omp.found()
 endif
 
 if fc.get_id() == 'gcc'
-  lapack = dependency('lapack', required: true)
-  if not lapack.found()
-    lapack = declare_dependency(
-      link_args: '-llapack',
-    )
-  endif
+  lapack = declare_dependency(
+    link_args: '-llapack',
+  )
 endif
 if fc.get_id() == 'intel'
-  lapack = dependency('mkl_rt', required: true)
-  if not lapack.found()
-    lapack = declare_dependency(
-      link_args: '-lmkl_rt',
-    )
-  endif
+  lapack = declare_dependency(
+    link_args: '-lmkl_rt',
+  )
 endif
 
 # https://mesonbuild.com/Python-module.html
