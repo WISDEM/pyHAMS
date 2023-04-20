@@ -52,26 +52,15 @@ if not omp.found()
   endif
 endif
 
-if is_windows
-  abs_src_dir = meson.source_root()
-  cur_src_dir = meson.current_source_dir()
-  src_here_dir = abs_src_dir / cur_src_dir
-  
+if fc.get_id() == 'gcc'
   lapack = declare_dependency(
-    dependencies : fc.find_library('lapack', dirs : [abs_src_dir / cur_src_dir / 'pyhams' / 'src']),
-    include_directories : include_directories('pyhams/src'),
+    link_args: '-llapack',
   )
-  else
-    if fc.get_id() == 'gcc'
-      lapack = declare_dependency(
-        link_args: '-llapack',
-      )
-    endif
-    if fc.get_id() == 'intel'
-      lapack = declare_dependency(
-        link_args: '-lmkl_rt',
-      )
-    endif
+endif
+if fc.get_id() == 'intel'
+  lapack = declare_dependency(
+    link_args: '-lmkl_rt',
+  )
 endif
 
 # https://mesonbuild.com/Python-module.html
