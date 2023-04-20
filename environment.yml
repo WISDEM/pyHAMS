@@ -6,6 +6,7 @@ channels:
 
 dependencies:
   - openblas
+  - lapack
   - meson
   - ninja
   - numpy
