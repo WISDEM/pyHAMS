@@ -27,8 +27,8 @@ jobs:
               if: contains( matrix.os, 'windows')
               uses: msys2/setup-msys2@v2
               with:
-                  install: mingw-w64-x86_64-lapack #mingw-w64-x86_64-toolchain
-                  location: "C:\Program Files"
+                  install: mingw-w64-x86_64-openblas #mingw-w64-x86_64-toolchain
+                  location: "C:\\Program Files"
                   
             - name: checkout repository
               uses: actions/checkout@v3
@@ -40,14 +40,23 @@ jobs:
                   python-version: ${{ matrix.python-version }}
                   update-environment: true
 
-            - name: Setup tmate session
-              if: contains( matrix.os, 'mac')
-              uses: mxschmitt/action-tmate@v3
+            #- name: Setup tmate session
+            #  if: contains( matrix.os, 'mac')
+            #  uses: mxschmitt/action-tmate@v3
               
             - name: Pip Install pyHAMS
+              if: false == contains( matrix.os, 'mac')
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
               run: |
+                  '${{ steps.cp.outputs.python-path }}' -m pip install -vv -e .
+              
+            - name: Pip Install pyHAMS mac
+              if: contains( matrix.os, 'mac')
+              env:
+                  MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
+              run: |
+                  export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
                   '${{ steps.cp.outputs.python-path }}' -m pip install -vv -e .
 
             - name: Test run
