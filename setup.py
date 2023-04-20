@@ -103,8 +103,7 @@ if __name__ == "__main__":
     staging_dir = "meson_build"
 
     # If on Windows, use the compiled exe from Yingyi
-    if ( (not platform.system() == "Windows") and
-         ("dist" not in str(os.path.abspath(__file__))) ):
+    if "dist" not in str(os.path.abspath(__file__)):
         cwd = os.getcwd()
         run_meson_build(staging_dir)
         os.chdir(cwd)
