@@ -77,6 +77,4 @@ py3_dep = py3.dependency()
 message(py3.path())
 message(py3.get_install_dir())
 
-if not is_windows
-  subdir('pyhams')
-endif
+subdir('pyhams')

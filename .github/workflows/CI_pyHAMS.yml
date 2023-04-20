@@ -38,9 +38,9 @@ jobs:
               run: |
                   '${{ steps.cp.outputs.python-path }}' -m pip install -vv -e .
 
-            - name: Setup tmate session
-              if: contains( matrix.os, 'windows')
-              uses: mxschmitt/action-tmate@v3
+            #- name: Setup tmate session
+            #  if: contains( matrix.os, 'windows')
+            #  uses: mxschmitt/action-tmate@v3
 
             - name: Test run
               run: |
