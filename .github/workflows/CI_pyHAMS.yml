@@ -26,8 +26,7 @@ jobs:
               if: contains( matrix.os, 'windows')
               uses: msys2/setup-msys2@v2
               with:
-                  install: >-
-                      mingw-w64-lapack
+                  install: mingw-w64-x86_64-lapack
                   
             - name: checkout repository
               uses: actions/checkout@v3
