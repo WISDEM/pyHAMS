@@ -21,13 +21,13 @@ jobs:
         steps:
             - name: Setup GNU Fortran
             #  if: false == contains( matrix.os, 'windows')
-              uses: modflowpy/install-gfortran-action@v1
+              uses: modflowpy/install-intelfortran-action@v1 #awvwgk/setup-fortran@main
 
-            - name: Windows build environment
-              if: contains( matrix.os, 'windows')
-              uses: msys2/setup-msys2@v2
-              with:
-                  install: mingw-w64-x86_64-lapack #mingw-w64-x86_64-toolchain 
+            #- name: Windows build environment
+            #  if: contains( matrix.os, 'windows')
+            #  uses: msys2/setup-msys2@v2
+            #  with:
+            #      install: mingw-w64-x86_64-lapack #mingw-w64-x86_64-toolchain 
                   
             - name: checkout repository
               uses: actions/checkout@v3
