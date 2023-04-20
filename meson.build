@@ -53,8 +53,12 @@ if not omp.found()
 endif
 
 if is_windows
+  abs_src_dir = meson.source_root()
+  cur_src_dir = meson.current_source_dir()
+  src_here_dir = abs_src_dir / cur_src_dir
+  
   lapack = declare_dependency(
-    dependencies : fc.find_library('lapack', dirs : ['pyhams/src']),
+    dependencies : fc.find_library('lapack', dirs : [abs_src_dir / cur_src_dir / 'pyhams' / 'src']),
     include_directories : include_directories('pyhams/src'),
   )
   else
