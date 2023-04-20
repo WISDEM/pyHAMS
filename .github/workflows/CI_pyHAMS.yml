@@ -26,7 +26,6 @@ jobs:
             - name: Windows build environment
               if: contains( matrix.os, 'windows')
               uses: msys2/setup-msys2@v2
-              update: true
               with:
                   install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-lapack
                   
