@@ -51,7 +51,7 @@ if not omp.found()
     )
   endif
 endif
-lapack = dependency('mkl_rt', 'openblas', 'blas', 'lapack', 'accelerate', 'atlas', 'netlib')
+lapack = dependency('mkl_rt', 'openblas', 'lapack', 'blas', 'netlib', required: true)
 #if fc.get_id() == 'gcc'
 #  lapack = declare_dependency(
 #    link_args: '-llapack',
