@@ -28,7 +28,7 @@ jobs:
               uses: msys2/setup-msys2@v2
               with:
                   install: mingw-w64-x86_64-openblas #mingw-w64-x86_64-toolchain
-                  location: "C:\\Program Files"
+                  location: C:\
                   
             - name: checkout repository
               uses: actions/checkout@v3

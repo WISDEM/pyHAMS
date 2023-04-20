@@ -52,7 +52,7 @@ if not omp.found()
   endif
 endif
 if fc.get_id() == 'gcc'
-  lapack = dependency('openblas', 'lapack', 'blas', 'netlib', required: true)
+  lapack = dependency('openblas', required: true)
 endif
 #  lapack = declare_dependency(
 #    link_args: '-llapack',
