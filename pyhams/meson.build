@@ -60,8 +60,6 @@ py3.extension_module('_hams',
                      dependencies : [py3_dep, lapack, omp],
                      subdir: 'pyhams',
 		     link_language: 'fortran',
-                     build_rpath: 'src',
-                     install_rpath: 'src',
                      install : true)
 
 
