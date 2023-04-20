@@ -10,6 +10,22 @@ import shutil
 import setuptools
 import subprocess
 
+#######
+# This forces wheels to be platform specific
+from setuptools.dist import Distribution
+from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+
+class bdist_wheel(_bdist_wheel):
+    def finalize_options(self):
+        _bdist_wheel.finalize_options(self)
+        self.root_is_pure = False
+
+class BinaryDistribution(Distribution):
+    """Distribution which always forces a binary package with platform name"""
+    def has_ext_modules(foo):
+        return True
+#######
+
 
 def run_meson_build(staging_dir):
     prefix = os.path.join(os.getcwd(), staging_dir)
@@ -28,8 +44,11 @@ def run_meson_build(staging_dir):
 
     # configure
     meson_path = shutil.which("meson")
+    if meson_path is None:
+        raise OSError("The meson command cannot be found on the system")
+        
     meson_call = (
-        f"{meson_path} setup {staging_dir} --prefix={prefix} "
+        f"{meson_path} setup {staging_dir} --wipe --prefix={prefix} "
         + f"-Dpython.purelibdir={purelibdir} -Dpython.platlibdir={purelibdir} {meson_args}"
     )
     sysargs = meson_call.split(" ")
@@ -103,27 +122,7 @@ if __name__ == "__main__":
     #    open(init_file).read(),
     #)[0]
 
-    setuptools.setup(
-        name='pyHAMS',
-        version='1.0.0',
-        description='Python module wrapping around HAMS',
-        long_description="pyHAM is a Python interface to the HAMS boundary-element solver for underwater potential flow solutions",
-        author='NREL WISDEM Team',
-        author_email='systems.engineering@nrel.gov',
-        license='Apache License, Version 2.0',
-        install_requires=[
-            "numpy",
-            "meson",
-            "ninja",
-        ],
-        extras_require={
-            "testing": ["pytest"],
-        },
-        python_requires=">=3.8",
-        package_data={"": ["*.yaml", "*.so", "*.lib", "*.pyd", "*.pdb", "*.dylib", "*.dll"]},
-        packages=['pyhams'],
-        zip_safe=False,
-    )
+    setuptools.setup(cmdclass={'bdist_wheel': bdist_wheel}, distclass=BinaryDistribution)
 
 #os.environ['NPY_DISTUTILS_APPEND_FLAGS'] = '1'
 
