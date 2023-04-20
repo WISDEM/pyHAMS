@@ -21,13 +21,14 @@ jobs:
         steps:
             - name: Setup GNU Fortran
             #  if: false == contains( matrix.os, 'windows')
-              uses: modflowpy/install-intelfortran-action@v1 #awvwgk/setup-fortran@main
+              uses: awvwgk/setup-fortran@main #modflowpy/install-intelfortran-action@v1 #
 
-            #- name: Windows build environment
-            #  if: contains( matrix.os, 'windows')
-            #  uses: msys2/setup-msys2@v2
-            #  with:
-            #      install: mingw-w64-x86_64-lapack #mingw-w64-x86_64-toolchain 
+            - name: Windows build environment
+              if: contains( matrix.os, 'windows')
+              uses: msys2/setup-msys2@v2
+              with:
+                  install: mingw-w64-x86_64-lapack #mingw-w64-x86_64-toolchain
+                  location: "C:\Program Files"
                   
             - name: checkout repository
               uses: actions/checkout@v3
@@ -38,15 +39,16 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
                   update-environment: true
+
+            - name: Setup tmate session
+              if: contains( matrix.os, 'mac')
+              uses: mxschmitt/action-tmate@v3
               
             - name: Pip Install pyHAMS
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
               run: |
                   '${{ steps.cp.outputs.python-path }}' -m pip install -vv -e .
-
-            #- name: Setup tmate session
-            #  uses: mxschmitt/action-tmate@v3
 
             - name: Test run
               run: |

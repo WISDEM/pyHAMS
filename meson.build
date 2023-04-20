@@ -32,11 +32,11 @@ if fc.get_id() == 'gcc'
   _fflags += fc.get_supported_arguments('-fno-align-commons')
 endif
 if fc.get_id() == 'intel'
-  _fflags = fc.get_supported_arguments('-mkl')
+  _fflags = fc.get_supported_arguments('-qmkl')
 elif fc.get_id() == 'intel-cl'
   # Intel Fortran on Windows does things differently, so deal with that
   # (also specify dynamic linking and the right name mangling)
-  _fflags = fc.get_supported_arguments('/mkl')
+  _fflags = fc.get_supported_arguments('/qmkl')
 endif
 add_project_arguments(_fflags, language: 'fortran')
 omp = dependency('openmp', required: false)
@@ -51,8 +51,9 @@ if not omp.found()
     )
   endif
 endif
-lapack = dependency('mkl_rt', 'openblas', 'lapack', 'blas', 'netlib', required: true)
-#if fc.get_id() == 'gcc'
+if fc.get_id() == 'gcc'
+  lapack = dependency('openblas', 'lapack', 'blas', 'netlib', required: true)
+endif
 #  lapack = declare_dependency(
 #    link_args: '-llapack',
 #  )
