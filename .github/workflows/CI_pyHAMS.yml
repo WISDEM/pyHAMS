@@ -20,15 +20,15 @@ jobs:
 
         steps:
             - name: Setup GNU Fortran
-              if: false == contains( matrix.os, 'windows')
+            #  if: false == contains( matrix.os, 'windows')
               uses: modflowpy/install-gfortran-action@v1
 
-            - name: Windows build environment
-              if: contains( matrix.os, 'windows')
-              uses: msys2/setup-msys2@v2
-              with:
-                  update: true
-                  install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-lapack
+            #- name: Windows build environment
+            #  if: contains( matrix.os, 'windows')
+            #  uses: msys2/setup-msys2@v2
+            #  with:
+            #      update: true
+            #      install: mingw-w64-x86_64-toolchain mingw-w64-x86_64-lapack
                   
             - name: checkout repository
               uses: actions/checkout@v3
@@ -88,6 +88,7 @@ jobs:
               if: contains( matrix.os, 'windows')
               run: |
                   conda install -y m2w64-toolchain libpython liblapack
+                  conda list
 
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies mac specific
