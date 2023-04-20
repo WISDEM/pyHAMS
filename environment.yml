@@ -5,8 +5,8 @@ channels:
   - defaults
 
 dependencies:
-  - openblas
-  - lapack
+  #- openblas
+  - liblapack
   - meson
   - ninja
   - numpy
