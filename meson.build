@@ -39,6 +39,7 @@ elif fc.get_id() == 'intel-cl'
   _fflags = fc.get_supported_arguments('/qmkl')
 endif
 add_project_arguments(_fflags, language: 'fortran')
+
 omp = dependency('openmp', required: false)
 if not omp.found()
   if fc.get_id() == 'intel'
@@ -51,8 +52,9 @@ if not omp.found()
     )
   endif
 endif
+
 if fc.get_id() == 'gcc'
-  lapack = dependency('openblas', required: true)
+  lapack = dependency('openblas', 'mkl_rt', 'blas', 'lapack', required: true)
 endif
 #  lapack = declare_dependency(
 #    link_args: '-llapack',
