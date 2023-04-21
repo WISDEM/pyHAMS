@@ -26,8 +26,8 @@ jobs:
             - name: Windows openblas
               if: contains( matrix.os, 'windows')
               run: |
-                  #npm install openblas
-                  dotnet add package OpenBLAS
+                  npm install openblas
+                  #dotnet add package OpenBLAS
                   #vcpkg install openblas
                   
             - name: Mac openblas
@@ -38,7 +38,7 @@ jobs:
             - name: Linux openblas
               if: contains( matrix.os, 'ubuntu')
               run: |
-                  sudo apt-get libopenblas-dev
+                  sudo apt-get install libopenblas-dev
                   
             - name: checkout repository
               uses: actions/checkout@v3
@@ -55,7 +55,6 @@ jobs:
             #  uses: mxschmitt/action-tmate@v3
               
             - name: Pip Install pyHAMS
-              if: false == contains( matrix.os, 'mac')
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
               run: |
