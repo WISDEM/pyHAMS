@@ -37,8 +37,8 @@ jobs:
               if: contains( matrix.os, 'windows')
               run: |
                   #vcpkg install openblas
-                  pacman -S mingw-w64-x86_64-openblas64
-                  #'${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
+                  #pacman -S mingw-w64-x86_64-openblas64
+                  '${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
                   
             - name: Mac openblas
               if: contains( matrix.os, 'mac')
@@ -51,9 +51,9 @@ jobs:
               run: |
                   sudo apt-get install libopenblas-dev
                   
-            #- name: Setup tmate session
-            #  if: contains( matrix.os, 'windows')
-            #  uses: mxschmitt/action-tmate@v3
+            - name: Setup tmate session
+              if: contains( matrix.os, 'windows')
+              uses: mxschmitt/action-tmate@v3
               
             - name: Pip Install pyHAMS
               env:
