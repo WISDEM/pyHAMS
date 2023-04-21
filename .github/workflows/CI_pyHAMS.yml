@@ -52,9 +52,9 @@ jobs:
               run: |
                   sudo apt-get install libopenblas-dev
                   
-            - name: Setup tmate session
-              if: contains( matrix.os, 'windows')
-              uses: mxschmitt/action-tmate@v3
+            #- name: Setup tmate session
+            #  if: contains( matrix.os, 'windows')
+            #  uses: mxschmitt/action-tmate@v3
               
             - name: Pip Install pyHAMS
               env:
