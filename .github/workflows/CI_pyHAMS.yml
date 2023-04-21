@@ -28,7 +28,11 @@ jobs:
               uses: msys2/setup-msys2@v2
               with:
                   install: mingw-w64-x86_64-openblas #mingw-w64-x86_64-toolchain
-                  location: C:\
+                  location: "C:\\"
+                  
+            - name: Windows build environment
+              if: contains( matrix.os, 'windows')
+              run: npm install openblas
                   
             - name: checkout repository
               uses: actions/checkout@v3
