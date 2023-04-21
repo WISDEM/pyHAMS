@@ -37,7 +37,8 @@ jobs:
               if: contains( matrix.os, 'windows')
               run: |
                   #npm install -g openblas
-                  vcpkg install openblas
+                  #vcpkg install openblas
+                  pacman -S mingw-w64-x86_64-openblas
                   '${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
                   
             - name: Mac openblas
