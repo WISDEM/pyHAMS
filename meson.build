@@ -53,18 +53,8 @@ if not omp.found()
   endif
 endif
 
-if fc.get_id() == 'gcc'
-  lapack = dependency('openblas', 'mkl_rt', 'blas', 'lapack', required: true)
-endif
-#  lapack = declare_dependency(
-#    link_args: '-llapack',
-#  )
-#endif
-#if fc.get_id() == 'intel'
-#  lapack = declare_dependency(
-#    link_args: '-lmkl_rt',
-#  )
-#endif
+# Need lapack via OpenBlas preferably
+lapack = dependency('mkl_rt', 'openblas', 'blas', 'lapack', required: true)
 
 # https://mesonbuild.com/Python-module.html
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
