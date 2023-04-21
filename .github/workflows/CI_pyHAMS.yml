@@ -26,14 +26,15 @@ jobs:
             - name: Windows openblas
               if: contains( matrix.os, 'windows')
               run: |
-                  npm install openblas
+                  #npm install openblas
                   #dotnet add package OpenBLAS
-                  #vcpkg install openblas
+                  vcpkg install openblas
                   
             - name: Mac openblas
               if: contains( matrix.os, 'mac')
               run: |
-                  export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
+                  #export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
+                  sudo ln -s /usr/local/opt/openblas/lib/* /usr/local/lib/
                   
             - name: Linux openblas
               if: contains( matrix.os, 'ubuntu')
