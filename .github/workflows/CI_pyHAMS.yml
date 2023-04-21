@@ -22,12 +22,23 @@ jobs:
             - name: Setup GNU Fortran
             #  if: false == contains( matrix.os, 'windows')
               uses: awvwgk/setup-fortran@main #modflowpy/install-intelfortran-action@v1 #
+              
+            - name: checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v4
+              id: cp
+              with:
+                  python-version: ${{ matrix.python-version }}
+                  update-environment: true
 
             - name: Windows openblas
               if: contains( matrix.os, 'windows')
               run: |
-                  npm install -g openblas
-                  #vcpkg install openblas
+                  #npm install -g openblas
+                  vcpkg install openblas
+                  '${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
                   
             - name: Mac openblas
               if: contains( matrix.os, 'mac')
@@ -40,16 +51,6 @@ jobs:
               run: |
                   sudo apt-get install libopenblas-dev
                   
-            - name: checkout repository
-              uses: actions/checkout@v3
-
-            - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v4
-              id: cp
-              with:
-                  python-version: ${{ matrix.python-version }}
-                  update-environment: true
-
             - name: Setup tmate session
               if: contains( matrix.os, 'windows')
               uses: mxschmitt/action-tmate@v3
