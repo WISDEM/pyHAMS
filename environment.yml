@@ -6,9 +6,11 @@ channels:
 
 dependencies:
   - openblas
+  - openmp
   - meson
   - ninja
   - numpy
   - pip
   - python
+  - pkg-config
   - setuptools
