@@ -1,12 +1,8 @@
 import os
 import os.path as osp
-import platform
 import numpy as np
 
-if not platform.system() == 'Windows':
-    import pyhams._hams as hams
-else:
-    import subprocess as sub
+import pyhams._hams as hams
 
 def nemohmesh_to_pnl(nemohMeshPath, writeDir=None):
     '''
@@ -400,18 +396,10 @@ def read_wamit3(pathWamit3, TFlag=0):
     return mod, phase, real, imag, w, headings
 
 def run_hams(projectDir):
-    '''call the HAMS_x64.exe program in the specified project directory'''
-    # get absolute path to the local HAMS_x64.exe program
-    hamsDir = osp.dirname(__file__)
-    hamsExe = './bin/HAMS_x64.exe'
-    hamsPath = osp.abspath(osp.join(hamsDir, hamsExe))
     # change directory to where the HAMS input files are
     workingDir = os.getcwd()
     os.chdir(projectDir)
     # run HAMS
-    if platform.system() == 'Windows':
-        sub.run([f'{hamsPath}'])
-    else:
-        hams.hams_full.exec()
+    hams.hams_full.exec()
     # change back to working directory
     os.chdir(workingDir)
