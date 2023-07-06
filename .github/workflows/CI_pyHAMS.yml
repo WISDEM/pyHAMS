@@ -87,11 +87,13 @@ jobs:
             - uses: conda-incubator/setup-miniconda@v2
               # https://github.com/marketplace/actions/setup-miniconda
               with:
+                  mamba-version: "*"
                   miniconda-version: "latest"
-                  auto-update-conda: true
+                  #auto-update-conda: true
                   python-version: ${{ matrix.python-version }}
                   environment-file: environment.yml
                   channels: conda-forge
+                  channel-priority: true          
                   activate-environment: test
                   auto-activate-base: false
 
@@ -99,20 +101,20 @@ jobs:
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
-                  conda install -y m2w64-toolchain libpython
-                  conda list
+                  mamba install -y m2w64-toolchain libpython
+                  mamba list
 
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies mac specific
               if: contains( matrix.os, 'mac')
               run: |
-                  conda install -y compilers
+                  mamba install -y compilers
                   gfortran --version
 
             # Install 
             - name: Conda Install pyHAMS
               run: |
-                  python setup.py develop
+                  python -m pip install -vv -e .
 
             - name: Test run
               run: |
