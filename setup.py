@@ -35,6 +35,8 @@ def run_meson_build(staging_dir):
     meson_args = ""
     if "MESON_ARGS" in os.environ:
         meson_args = os.environ["MESON_ARGS"]
+        # A weird add-on on mac github action runners needs to be removed
+        if meson_args.find("buildtype") >= 0: meson_args = ""
 
     if platform.system() == "Windows":
         if not "FC" in os.environ:
