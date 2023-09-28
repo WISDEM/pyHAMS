@@ -4,12 +4,8 @@ channels:
 
 dependencies:
   - openblas
-  - mkl
-  - libopenblas
-  - libblas
-  - liblapack
   - openmp
-  - meson
+  - meson<1.2
   - ninja
   - numpy
   - pip
