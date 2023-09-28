@@ -3,12 +3,13 @@ channels:
   - defaults
 
 dependencies:
-  - openblas
-  - openmp
+  - cmake
   - meson<1.2
   - ninja
   - numpy
+  - openblas
+  - openmp
   - pip
-  - python
   - pkg-config
+  - python
   - setuptools
