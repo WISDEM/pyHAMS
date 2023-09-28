@@ -21,10 +21,10 @@ jobs:
         steps:
             - name: Setup GNU Fortran
             #  if: false == contains( matrix.os, 'windows')
-              uses: awvwgk/setup-fortran@main #modflowpy/install-intelfortran-action@v1 #
+              uses: awvwgk/setup-fortran@v1 #modflowpy/install-intelfortran-action@v1 #
               
             - name: checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v4
@@ -72,7 +72,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         defaults:
             run:
-                shell: bash -l {0}
+                shell: bash -el {0}
                 
         strategy:
             fail-fast: false #true
@@ -87,13 +87,11 @@ jobs:
             - uses: conda-incubator/setup-miniconda@v2
               # https://github.com/marketplace/actions/setup-miniconda
               with:
-                  mamba-version: "*"
-                  miniconda-version: "latest"
-                  #auto-update-conda: true
+                  #mamba-version: "*"
+                  miniforge-version: "latest"
+                  auto-update-conda: true
                   python-version: ${{ matrix.python-version }}
                   environment-file: environment.yml
-                  channels: conda-forge
-                  channel-priority: true          
                   activate-environment: test
                   auto-activate-base: false
 
@@ -101,16 +99,20 @@ jobs:
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
-                  mamba install -y m2w64-toolchain libpython
-                  mamba list
+                  conda install -y m2w64-toolchain libpython
 
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies mac specific
               if: contains( matrix.os, 'mac')
               run: |
-                  mamba install -y compilers
+                  conda install -y compilers
                   gfortran --version
 
+            # Install 
+            - name: Debug
+              run: |
+                  conda list
+                  
             # Install 
             - name: Conda Install pyHAMS
               env:
