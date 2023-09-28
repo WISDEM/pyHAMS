@@ -4,9 +4,11 @@ channels:
 
 dependencies:
   - cmake
-  - meson<1.2
+  - meson
   - ninja
   - numpy
+  - libopenblas
+  - mkl
   - openblas
   - openmp
   - pip
