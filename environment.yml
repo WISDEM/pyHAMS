@@ -5,7 +5,7 @@ channels:
 dependencies:
   - openblas
   - openmp
-  - meson<1.2
+  - meson<1.1
   - ninja
   - numpy
   - pip

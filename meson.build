@@ -54,7 +54,7 @@ if not omp.found()
 endif
 
 # Need lapack via OpenBlas preferably
-lapack = dependency('openblas', 'mkl', 'libflame', 'accelerate', 'atlas', 'netlib', required: true)
+lapack = dependency('openblas', 'mkl', 'blas', 'lapack', 'libflame', 'accelerate', 'atlas', 'netlib', required: true)
 
 # https://mesonbuild.com/Python-module.html
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
