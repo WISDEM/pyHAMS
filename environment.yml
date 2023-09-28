@@ -6,6 +6,10 @@ channels:
 
 dependencies:
   - openblas
+  - mkl
+  - libopenblas
+  - libblas
+  - liblapack
   - openmp
   - meson
   - ninja
