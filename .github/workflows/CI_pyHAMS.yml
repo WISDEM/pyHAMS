@@ -112,7 +112,7 @@ jobs:
             - name: Debug
               run: |
                   conda list
-                  echo $LD_LIBRARY_PATH
+                  printenv
                   
             # Install 
             - name: Conda Install pyHAMS
