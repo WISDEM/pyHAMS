@@ -96,11 +96,13 @@ jobs:
                   auto-activate-base: false
 
             # Install dependencies of WISDEM specific to windows
+            # NOTE: If you install m2w64-toolchain, it includes m2w64-pkgconfig which supercedes the conda one
+            # The m2w64 pkgconfig fails to find openblas and the install fails
+            # By only includes these compiler packages, the build succeeds
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
                   conda install -y m2w64-binutils m2w64-gcc m2w64-gcc-libgfortran m2w64-gcc-fortran libpython
-                  echo "$CONDA_PREFIX/Library/lib" >> $GITHUB_PATH
                   
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies mac specific
@@ -115,12 +117,11 @@ jobs:
                   conda list
                   printenv
 
-            - name: Setup tmate session
-              uses: mxschmitt/action-tmate@v3
-              with:
-                  detached: true
-              if: contains( matrix.os, 'windows')
-
+            #- name: Setup tmate session
+            #  uses: mxschmitt/action-tmate@v3
+            #  with:
+            #      detached: true
+            #  if: contains( matrix.os, 'windows')
                     
             # Install 
             - name: Conda Install pyHAMS

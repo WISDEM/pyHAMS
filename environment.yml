@@ -7,8 +7,6 @@ dependencies:
   - meson
   - ninja
   - numpy
-  - libopenblas
-  - mkl
   - openblas
   - openmp
   - pip
