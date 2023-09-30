@@ -114,7 +114,14 @@ jobs:
               run: |
                   conda list
                   printenv
-                  
+
+            - name: Setup tmate session
+              uses: mxschmitt/action-tmate@v3
+              with:
+                  detached: true
+              if: contains( matrix.os, 'windows')
+
+                    
             # Install 
             - name: Conda Install pyHAMS
               env:
