@@ -99,8 +99,7 @@ jobs:
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
-                  conda install -y m2w64-toolchain libpython
-                  conda remove -y m2w64-pkg-config
+                  conda install -y m2w64-binutils m2w64-gcc m2w64-gcc-libgfortran m2w64-gcc-gfortran libpython
                   echo "$CONDA_PREFIX/Library/lib" >> $GITHUB_PATH
                   
             # Install dependencies of WISDEM specific to windows
