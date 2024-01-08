@@ -23,12 +23,13 @@ fortranobject_c = incdir_f2py / 'fortranobject.c'
 
 inc_np = include_directories(incdir_numpy, incdir_f2py)
 
-hams_connect = custom_target('_hamsmodule.c',
-                             input : ['src/HAMS_Prog.f90'],
-                             output : ['_hamsmodule.c', '_hams-f2pywrappers2.f90'],
-                             command: [py3, '-m', 'numpy.f2py',
-			               '@INPUT@', '-m', '_hams', '--lower', '--build-dir', 'pyhams']
-                            )
+#hams_connect = custom_target('_hamsmodule.c',
+#                             input : ['src/HAMS_Prog.f90'],
+#                             output : ['_hamsmodule.c', '_hams-f2pywrappers2.f90'],
+#                             command: [py3, '-m', 'numpy.f2py',
+#			               '@INPUT@', '-m', '_hams', '--lower',
+#                                       '--build-dir', 'pyhams']
+#                            )
 
 # Source order is important for dependencies
 py3.extension_module('_hams',
@@ -53,11 +54,12 @@ py3.extension_module('_hams',
                      'src/PrintOutput.f90',
                      'src/SolveMotion.f90',
                      'src/WavDynSubs.f90',
-                     'src/HAMS_Prog.f90'],
-                     #'src/_hams-f2pywrappers2.f90',
-                     #'src/_hamsmodule.c'],
-                     hams_connect,
+                     'src/HAMS_Prog.f90',
+                     'src/_hams-f2pywrappers2.f90',
+                     'src/_hamsmodule.c',
                      fortranobject_c,
+                     ],
+                     #hams_connect,
                      include_directories: inc_np,
                      dependencies : [py3_dep, lapack, omp],
                      subdir: 'pyhams',

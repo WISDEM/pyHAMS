@@ -3,10 +3,10 @@
 !     It contains Fortran 90 wrappers to fortran functions.
 
       
-      subroutine f2pyinitHAMS_Full(f2pysetupfunc)
-      use HAMS_Full, only : Exec
+      subroutine f2pyinithams_full(f2pysetupfunc)
+      use hams_full, only : exec
       external f2pysetupfunc
-      call f2pysetupfunc(Exec)
-      end subroutine f2pyinitHAMS_Full
+      call f2pysetupfunc(exec)
+      end subroutine f2pyinithams_full
 
 
