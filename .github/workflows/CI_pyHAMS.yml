@@ -15,7 +15,7 @@ jobs:
         strategy:
             fail-fast: false #true
             matrix:
-                os: ["ubuntu-latest", "macOS-latest"] #, "windows-latest"]
+                os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
                 python-version: ["3.9", "3.10", "3.11"]
 
         steps:
@@ -59,6 +59,7 @@ jobs:
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
               run: |
+                  '${{ steps.cp.outputs.python-path }}' -m pip install --upgrade pip
                   '${{ steps.cp.outputs.python-path }}' -m pip install meson-python meson numpy ninja wheel
                   '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation -e . -v
 
