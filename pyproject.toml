@@ -46,7 +46,7 @@ classifiers = [  # Optional
 ]
 
 dependencies = [
-  "numpy",
+  "numpy","meson","ninja",
 ]
 
 # List additional groups of dependencies here (e.g. development
@@ -58,7 +58,6 @@ dependencies = [
 # Similar to `dependencies` above, these must be valid existing
 # projects.
 [project.optional-dependencies] # Optional
-dev = ["meson", "ninja"]
 test = ["pytest"]
 
 # List URLs that are relevant to your project

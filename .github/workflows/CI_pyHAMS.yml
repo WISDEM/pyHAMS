@@ -128,7 +128,7 @@ jobs:
               env:
                   MESON_ARGS: ""
               run: |
-                  python setup.py develop
+                  python -m pip install .
 
             - name: Test run
               run: |
