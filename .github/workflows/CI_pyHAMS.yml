@@ -59,7 +59,7 @@ jobs:
               env:
                   MESON_ARGS: -Dpython_target=${{ steps.cp.outputs.python-path }}
               run: |
-                  '${{ steps.cp.outputs.python-path }}' -m pip install -v -e .
+                  '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation -e . -v
 
             - name: Test run
               run: |
