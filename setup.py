@@ -26,7 +26,7 @@ staging_dir = os.path.join(this_dir, "meson_build")
 build_dir = os.path.join(this_dir, "build")
 
 def copy_shared_libraries():
-    build_path = os.path.join(build_dir, "pyhams")
+    build_path = os.path.join(staging_dir, "pyhams")
     for root, _dirs, files in os.walk(build_path):
         for file in files:
             if file.endswith((".so", ".lib", ".pyd", ".pdb", ".dylib", ".dll")):
@@ -34,7 +34,7 @@ def copy_shared_libraries():
                     continue
                 file_path = os.path.join(root, file)
                 new_path = str(file_path)
-                match = re.search(build_dir, new_path)
+                match = re.search(staging_dir, new_path)
                 new_path = new_path[match.span()[1] + 1 :]
                 print(f"Copying build file {file_path} -> {new_path}")
                 shutil.copy(file_path, new_path)
@@ -81,7 +81,7 @@ class MesonBuildExt(build_ext):
 
             purelibdir = "."
             configure_call = ["meson", "setup", staging_dir, "--wipe",
-                          f"-Dpython.purelibdir={purelibdir}", f"--prefix={build_dir}", 
+                          f"-Dpython.purelibdir={purelibdir}", f"--prefix={staging_dir}", 
                           f"-Dpython.platlibdir={purelibdir}"] + meson_args.split()
             configure_call = [m for m in configure_call if m.strip() != ""]
             print(configure_call)
@@ -89,14 +89,10 @@ class MesonBuildExt(build_ext):
             build_call = ["meson", "compile", "-vC", staging_dir]
             print(build_call)
 
-            install_call = ["meson", "install", "-C", staging_dir]
-            print(install_call)
-
             self.build_temp = build_dir
 
             self.spawn(configure_call)
             self.spawn(build_call)
-            self.spawn(install_call)
             copy_shared_libraries()
 
             
