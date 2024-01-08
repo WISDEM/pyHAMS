@@ -5,7 +5,7 @@ project(
   'c',
 # unnecessary metadata commented out until Meson supports PEP517 and installation with pip
   license: 'Apache',
-  meson_version: '>= 0.60',
+  #meson_version: '>= 0.60',
   default_options: [
     'buildtype=debugoptimized',
     'c_std=c11',
