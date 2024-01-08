@@ -67,3 +67,13 @@ py3.extension_module('_hams',
                      install : true)
 
 
+python_sources = [
+  '__init__.py',
+  'pyhams.py',
+]
+
+py3.install_sources(
+  python_sources,
+  pure: false,
+  subdir: 'pyhams'
+)
