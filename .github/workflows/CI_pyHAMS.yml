@@ -37,7 +37,7 @@ jobs:
               if: contains( matrix.os, 'windows')
               run: |
                   #vcpkg install openblas
-                  #pacman -S mingw-w64-x86_64-openblas64
+                  pacman -S mingw-w64-x86_64-openblas64 mingw-w64-lapack
                   #'${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
                   
             - name: Mac openblas

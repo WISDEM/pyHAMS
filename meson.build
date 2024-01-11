@@ -27,16 +27,15 @@ endif
 
 # Adding at project level causes many spurious -lgfortran flags.
 _fflags = []
-if fc.get_id() == 'gcc'
-  _fflags = fc.get_supported_arguments('-fdec-math')
-  _fflags += fc.get_supported_arguments('-fno-align-commons')
-endif
-if fc.get_id() == 'intel'
+if fc.get_id() in ['intel', 'intel-llvm']
   _fflags = fc.get_supported_arguments('-qmkl')
-elif fc.get_id() == 'intel-cl'
+elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
   # Intel Fortran on Windows does things differently, so deal with that
   # (also specify dynamic linking and the right name mangling)
   _fflags = fc.get_supported_arguments('/qmkl')
+else
+  _fflags = fc.get_supported_arguments('-fdec-math')
+  _fflags += fc.get_supported_arguments('-fno-align-commons')
 endif
 add_project_arguments(_fflags, language: 'fortran')
 
@@ -59,12 +58,7 @@ lapack = dependency('openblas', 'mkl_rt', 'blas', 'lapack', required: true)
 # https://mesonbuild.com/Python-module.html
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
 # when cross compiling like on conda-forge
-py_mod = import('python')
-if get_option('python_target') != ''
-  py3 = py_mod.find_installation(get_option('python_target'))
-else
-  py3 = py_mod.find_installation('python')
-endif
+py3 = import('python').find_installation(pure: false)
 py3_dep = py3.dependency()
 
 message(py3.path())
