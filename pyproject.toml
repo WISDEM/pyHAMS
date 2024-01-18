@@ -136,7 +136,7 @@ skip = ["cp36-*", "cp37-*", "cp38-*", "*win*"]
 build-frontend = "build"
 
 [tool.cibuildwheel.linux]
-before-all = "yum install -y libopenblas-dev"
+before-all = "yum install -y lapack lapack-devel"
 
 [tool.cibuildwheel.macos]
 before-all = "brew install openblas"
