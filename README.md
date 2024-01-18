@@ -6,15 +6,11 @@ There is cylinder test case that demonstrates usage and outputs in ``test/test_c
 
 ## Prerequisites
 
-pyHAMS requires a Fortran compiler.  The python wrapper currently supports GNU and Intel compilers.  HAMS can be built with Flang, but that is not yet recognized by pyHAMS.
+pyHAMS requires a Fortran compiler and OpenBLAS / MKL / LAPACK.  The python wrapper currently supports GNU and Intel compilers.  HAMS can be built with Flang, but that is not yet recognized by pyHAMS.
 
 ## Install (as a library)
 
-To install pyHAMS as a library that can be used by WEIS or RAFT in the backend, you can use either conda or PyPi package management:
-
-    $ pip install pyHAMS
-	
-or
+To install pyHAMS as a library that can be used by WEIS or RAFT in the backend, conda is your best option:
 	
     $ conda install pyHAMS
 
