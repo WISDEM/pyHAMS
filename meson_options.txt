@@ -7,3 +7,4 @@ option('incdir_numpy', type: 'string', value: '',
 #    on the user's system which is run using the system Python installation, but the user may want build PyOptSparse for
 #    a Python installation in a virtual environment. Leave as an empty string to build for Python installation running
 #    Meson.''')
+y
