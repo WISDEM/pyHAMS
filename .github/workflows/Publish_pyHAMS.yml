@@ -24,6 +24,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Windows openblas
+        if: contains( matrix.os, 'windows')
+        run: |
+            #vcpkg install openblas
+            pacman -S mingw-w64-x86_64-openblas64 mingw-w64-lapack
+            #'${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
+                  
+      - name: Mac openblas
+        if: contains( matrix.os, 'mac')
+        run: |
+            #export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
+            sudo ln -s /usr/local/opt/openblas/lib/libopenblas* /usr/local/lib/
+                  
+      - name: Linux openblas
+        if: contains( matrix.os, 'ubuntu')
+        run: |
+            sudo apt-get install libopenblas-dev
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
 
