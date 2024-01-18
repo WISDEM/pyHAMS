@@ -5,6 +5,7 @@ channels:
 dependencies:
   - cmake
   - meson
+  - meson-python
   - ninja
   - numpy
   - openblas
@@ -12,4 +13,3 @@ dependencies:
   - pip
   - pkg-config
   - python
-  - setuptools

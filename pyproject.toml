@@ -78,6 +78,7 @@ download = "https://github.com/WISDEM/pyHAMS/releases"
 tracker = "https://github.com/WISDEM/pyHAMS/issues"
 
 [tool.meson-python.args]
+setup = ['--python.install-env=auto']
 install = ['--tags=runtime,python-runtime,bin']
 
 # This is configuration specific to the `setuptools` build backend.
