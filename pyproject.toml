@@ -4,7 +4,7 @@ requires = ["meson-python", "meson>=1.1", "numpy", "ninja", "wheel"]
 
 [project]
 name = "pyHAMS"
-version = "1.2.3"
+version = "1.2.4"
 description = "Python module wrapping around HAMS"
 readme = "README.md"
 requires-python = ">=3.9"
