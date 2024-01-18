@@ -134,3 +134,9 @@ atomic = true
 [tool.cibuildwheel]
 skip = ["cp36-*", "cp37-*", "cp38-*", "*win*"]
 build-frontend = "build"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y libopenblas-dev"
+
+[tool.cibuildwheel.macos]
+before-all = "brew install openblas"
