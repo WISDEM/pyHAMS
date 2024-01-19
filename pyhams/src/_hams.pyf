@@ -1,0 +1,28 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _hams ! in 
+    interface  ! in :_hams
+        module hams_full ! in :_hams:HAMS_Prog.f90
+            use assbmatx
+            use assbmatx_irr
+            use calgreenfunc
+            use readpanelmesh
+            use linearmatrix_mod
+            use hydrostatic
+            use implementsubs
+            use potentwavforce
+            use printoutput
+            use potentials_mod
+            use pressureelevation
+            use fieldoutput_mod
+            use omp_lib
+            subroutine exec ! in :_hams:HAMS_Prog.f90:hams_full
+            end subroutine exec
+        end module hams_full
+    end interface 
+end python module _hams
+
+! This file was auto-generated with f2py (version:1.26.2).
+! See:
+! https://web.archive.org/web/20140822061353/http://cens.ioc.ee/projects/f2py2e
