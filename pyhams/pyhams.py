@@ -322,7 +322,7 @@ def read_wamit1(pathWamit1, TFlag=0):
     # Check if the file contains the infinite and zero frequency points
     try:
         # extract the first 72 rows to see how many are infinite and zero
-        freq_test = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=72)
+        freq_test = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=73)  # add one extra (73) for formatting/syntax
         # find the row in the file that is not a zero or infinite frequency
         for i in range(len(freq_test)):     
             if freq_test[i,0] != 0.0 and freq_test[i,0] != -1.0:
