@@ -6,7 +6,7 @@ There is cylinder test case that demonstrates usage and outputs in ``test/test_c
 
 ## Prerequisites
 
-pyHAMS requires a Fortran compiler and OpenBLAS / MKL / LAPACK.  The python wrapper currently supports GNU and Intel compilers.  HAMS can be built with Flang, but that is not yet recognized by pyHAMS.
+pyHAMS requires a Fortran compiler and OpenBLAS / MKL / LAPACK.  We strongly recommend the [Miniforge](https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge3) distribution of `conda` to satisfy package dependencies, as the traditional Anaconda distribution can be slow and struggle with mapping out dependencies.
 
 ## Install (as a library)
 
@@ -17,13 +17,17 @@ To install pyHAMS as a library that can be used by WEIS or RAFT in the backend, 
 
 ## Install (from source)
 
-If you would like to build the project locally from source for easier access to the underlying methods and tests, do:
+If you would like to build the project locally from source for easier access to the underlying methods and tests, we still recommend using `conda` to satisfy dependencies.
 
     $ git clone https://github.com/WISDEM/pyHAMS.git
     $ cd pyHAMS
+    $ conda env create --name pyhams-env -f environment.yml
+    $ conda activate pyhams-env
+    $ conda install -y compilers                       # (Mac/Linux without other compilers)
+    $ conda install -y m2w64-toolchain libpython       # (Windows only)
     $ pip install .
 
-If developer/editable mode, do the same `git clone` step, but on install do:
+If developer/editable mode, replace the final step with:
 
     $ pip install --no-build-isolation -e .
 
