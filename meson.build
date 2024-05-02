@@ -18,6 +18,7 @@ add_languages('fortran', native: false)
 fc = meson.get_compiler('fortran')
 message(fc.get_id())
 is_windows = host_machine.system() == 'windows'
+is_mac = host_machine.system() == 'darwin'
 
 # We need -lm for all C code (assuming it uses math functions, which is safe to
 # assume for SciPy). For C++ it isn't needed, because libstdc++/libc++ is
@@ -54,14 +55,16 @@ else
 endif
 add_project_arguments(_fflags, language: 'fortran')
 
-omp = dependency('openmp')
-#if fc.get_id() in ['intel', 'intel-llvm']
-#  omp = declare_dependency(link_args: '-qopenmp')
-#elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
-#  omp = declare_dependency(link_args: '/qopenmp')
-#else
-#  omp = declare_dependency(link_args: '-fopenmp')
-#endif
+#omp = dependency('OpenMP', required: false)
+if fc.get_id() in ['intel', 'intel-llvm']
+  omp = declare_dependency(link_args: '-qopenmp')
+elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
+  omp = declare_dependency(link_args: '/qopenmp')
+elif is_mac
+  omp = declare_dependency(link_args: '-Xpreprocessor -fopenmp')
+else
+  omp = declare_dependency(link_args: '-fopenmp')
+endif
 
 # Need lapack via OpenBlas preferably
 lapack = dependency('openblas', ['mkl', 'mkl_rt', 'mkl-sdl'], 'lapack', 'blas', 'accelerate', required: true)
