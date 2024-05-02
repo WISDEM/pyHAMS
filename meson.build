@@ -55,16 +55,16 @@ else
 endif
 add_project_arguments(_fflags, language: 'fortran')
 
-#omp = dependency('OpenMP', required: false)
-if fc.get_id() in ['intel', 'intel-llvm']
-  omp = declare_dependency(link_args: '-qopenmp')
-elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
-  omp = declare_dependency(link_args: '/qopenmp')
-elif is_mac
-  omp = declare_dependency(link_args: ['-Xpreprocessor', '-fopenmp'])
-else
-  omp = declare_dependency(link_args: '-fopenmp')
-endif
+omp = dependency('OpenMP', required: false)
+#if fc.get_id() in ['intel', 'intel-llvm']
+#  omp = declare_dependency(link_args: '-qopenmp')
+#elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
+#  omp = declare_dependency(link_args: '/qopenmp')
+#elif is_mac
+#  omp = declare_dependency(link_args: ['-Xpreprocessor', '-fopenmp'])
+#else
+#  omp = declare_dependency(link_args: '-fopenmp')
+#endif
 
 # Need lapack via OpenBlas preferably
 lapack = dependency('openblas', ['mkl', 'mkl_rt', 'mkl-sdl'], 'lapack', 'blas', 'accelerate', required: true)
