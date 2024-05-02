@@ -28,7 +28,7 @@ jobs:
               id: install_cc
               uses: rlalik/setup-cpp-compiler@master
               with:
-                  compiler: gcc
+                  compiler: clang
           
             - name: Install mingw-w64 on Windows
               if: contains( matrix.os, 'windows')
@@ -52,12 +52,6 @@ jobs:
               
             - name: checkout repository
               uses: actions/checkout@v4
-
-            #- name: Set compilers
-            #  if: false == contains( matrix.os, 'windows')
-            #  run: |
-            #      echo "CC=${{ steps.install_cc.outputs.cc }}" >> $GITHUB_ENV
-            #      echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
                   
             - name: Mac openblas
               if: contains( matrix.os, 'mac')
@@ -70,6 +64,12 @@ jobs:
               if: contains( matrix.os, 'ubuntu')
               run: |
                   sudo apt-get install libopenblas-dev
+
+            - name: Set compilers
+              if: false == contains( matrix.os, 'windows')
+              run: |
+                  echo "CC=${{ steps.install_cc.outputs.cc }}" >> $GITHUB_ENV
+                  echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
 
             - name: Set up Python ${{ matrix.python-version }}
               uses: actions/setup-python@v5
