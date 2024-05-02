@@ -36,21 +36,21 @@ jobs:
               with:
                   path-type: inherit
                   update: true
-                  msystem: MINGW64
                   install: >-
-                      cmake
-                      pkg-config
-                      gcc
-                      gcc-libs
-                      gcc-fortran
-                      openblas
-                      openblas64
+                      mingw-w64-x86_64-cmake
+                      mingw-w64-x86_64-pkg-config
+                      mingw-w64-x86_64-gcc
+                      mingw-w64-x86_64-gcc-libs
+                      mingw-w64-x86_64-gcc-fortran
+                      mingw-w64-x86_64-openblas
+                      mingw-w64-x86_64-openblas64
 
             - name: Set compilers
               if: contains( matrix.os, 'windows')
               run: |
                   mv C:\\Strawberry\\perl\\bin\\pkg-config.BAT C:\\Strawberry\\perl\\bin\\old-pkg-config.old
                   mv C:\\Strawberry\\perl\\bin\\pkg-config C:\\Strawberry\\perl\\bin\\old-pkg-config
+                  export PATH=/c/msys64/mingw64/bin:$PATH
                   
               
             - name: checkout repository
@@ -61,7 +61,8 @@ jobs:
               run: |
                   #export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
                   #sudo ln -s /usr/local/opt/openblas/lib/libopenblas* /usr/local/lib/
-                  brew install openblas libomp 
+                  brew install openblas libomp
+                  brew reinstall gcc
                   
             - name: Linux openblas
               if: contains( matrix.os, 'ubuntu')
