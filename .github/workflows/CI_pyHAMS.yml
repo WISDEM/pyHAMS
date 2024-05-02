@@ -23,12 +23,12 @@ jobs:
               if: false == contains( matrix.os, 'windows')
               uses: awvwgk/setup-fortran@v1
 
-            #- name: Install compiler
-            #  if: false == contains( matrix.os, 'windows')
-            #  id: install_cc
-            #  uses: rlalik/setup-cpp-compiler@master
-            #  with:
-            #      compiler: gcc
+            - name: Install compiler
+              if: false == contains( matrix.os, 'windows')
+              id: install_cc
+              uses: rlalik/setup-cpp-compiler@master
+              with:
+                  compiler: gcc
           
             - name: Install mingw-w64 on Windows
               if: contains( matrix.os, 'windows')
@@ -47,7 +47,7 @@ jobs:
             - name: Set compilers
               if: contains( matrix.os, 'windows')
               run: |
-                  mv C:\Strawberry\perl\bin\pkg-config.BAT C:\Strawberry\perl\bin\pkg-config-old.old
+                  mv C:\\Strawberry\\perl\\bin\\pkg-config.BAT C:\\Strawberry\\perl\\bin\\pkg-config-old.old
             #      echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
               
             - name: checkout repository
