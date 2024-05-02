@@ -36,7 +36,7 @@ jobs:
               with:
                   path-type: inherit
                   update: true
-                  msystem: UCRT64
+                  msystem: MINGW64
                   install: >-
                       cmake
                       pkg-config
@@ -51,7 +51,7 @@ jobs:
               run: |
                   mv C:\\Strawberry\\perl\\bin\\pkg-config.BAT C:\\Strawberry\\perl\\bin\\old-pkg-config.old
                   mv C:\\Strawberry\\perl\\bin\\pkg-config C:\\Strawberry\\perl\\bin\\old-pkg-config
-            #      echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
+                  
               
             - name: checkout repository
               uses: actions/checkout@v4
