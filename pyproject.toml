@@ -4,7 +4,7 @@ requires = ["meson-python", "meson>=1.1", "numpy", "ninja", "wheel"]
 
 [project]
 name = "pyHAMS"
-version = "1.2.6"
+version = "1.3.0"
 description = "Python module wrapping around HAMS"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -36,6 +36,7 @@ classifiers = [  # Optional
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Fortran",
   "Operating System :: Microsoft :: Windows",
@@ -132,8 +133,18 @@ atomic = true
 #src_paths=isort,test
 
 [tool.cibuildwheel]
-skip = ["cp36-*", "cp37-*", "cp38-*", "*win*"]
-build-frontend = "build"
+skip = ["pp*", "cp36-*", "cp37-*", "cp38-*", "*-win32", "*-win_arm64"] #, "*-musllinux*"]
+build-frontend = { name = "build", args = ["-w","-n","-x"] }
+before-build = "pip install numpy ninja meson meson-python"
+build-verbosity = "3"
+
+# https://github.com/pdfo/pdfo
+[[tool.cibuildwheel.overrides]]
+select = "*-win_amd64"
+environment = { PKG_CONFIG_PATH="c:/opt/64/lib/pkgconfig" }
+
+[tool.cibuildwheel.windows]
+repair-wheel-command = "bash .github/tools/cibw_repair_wheel_command_windows.sh {wheel} {dest_dir}"
 
 [tool.cibuildwheel.linux]
 before-all = "yum install -y lapack lapack-devel blas blas-devel lapack64 lapack64-devel blas64 blas64-devel"

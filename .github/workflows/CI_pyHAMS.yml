@@ -15,30 +15,46 @@ jobs:
         strategy:
             fail-fast: false #true
             matrix:
-                os: ["ubuntu-latest", "macOS-latest"] #, "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11"]
+                os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
+                python-version: ["3.9", "3.10", "3.11", "3.12"]
 
         steps:
             - name: Setup GNU Fortran
-            #  if: false == contains( matrix.os, 'windows')
-              uses: awvwgk/setup-fortran@v1 #modflowpy/install-intelfortran-action@v1 #
+              if: false == contains( matrix.os, 'windows')
+              uses: awvwgk/setup-fortran@v1
+
+            - name: Install compiler
+              if: false == contains( matrix.os, 'windows')
+              id: install_cc
+              uses: rlalik/setup-cpp-compiler@master
+              with:
+                  compiler: clang
+          
+            - name: Install mingw-w64 on Windows
+              if: contains( matrix.os, 'windows')
+              uses: msys2/setup-msys2@v2
+              with:
+                  path-type: inherit
+                  install: |
+                      mingw-w64-x86_64-gcc
+                      mingw-w64-x86_64-gcc-fortran
+                      mingw-w64-openblas
               
             - name: checkout repository
               uses: actions/checkout@v4
 
+            - name: Set compilers
+              if: false == contains( matrix.os, 'windows')
+              run: |
+                  echo "CC=${{ steps.install_cc.outputs.cc }}" >> $GITHUB_ENV
+                  echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
+
             - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v4
+              uses: actions/setup-python@v5
               id: cp
               with:
                   python-version: ${{ matrix.python-version }}
                   update-environment: true
-
-            - name: Windows openblas
-              if: contains( matrix.os, 'windows')
-              run: |
-                  #vcpkg install openblas
-                  pacman -S mingw-w64-x86_64-openblas64 mingw-w64-lapack
-                  #'${{ steps.cp.outputs.python-path }}' -m pip install pylib-openblas
                   
             - name: Mac openblas
               if: contains( matrix.os, 'mac')
@@ -78,7 +94,7 @@ jobs:
             fail-fast: false #true
             matrix:
                 os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11"]
+                python-version: ["3.9", "3.10", "3.11", "3.12"]
 
         steps:
             - name: checkout repository
@@ -98,7 +114,7 @@ jobs:
             # Install dependencies of WISDEM specific to windows
             # NOTE: If you install m2w64-toolchain, it includes m2w64-pkgconfig which supercedes the conda one
             # The m2w64 pkgconfig fails to find openblas and the install fails
-            # By only includes these compiler packages, the build succeeds
+            # By only including these compiler packages, the build succeeds
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
