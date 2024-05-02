@@ -39,6 +39,7 @@ jobs:
                       mingw-w64-x86_64-cmake
                       mingw-w64-x86_64-pkg-config
                       mingw-w64-x86_64-gcc
+                      mingw-w64-x86_64-gcc-libs
                       mingw-w64-x86_64-gcc-fortran
                       mingw-w64-x86_64-openblas
                       mingw-w64-x86_64-openblas64
