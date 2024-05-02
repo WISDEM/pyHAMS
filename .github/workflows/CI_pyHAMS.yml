@@ -60,7 +60,8 @@ jobs:
               if: contains( matrix.os, 'mac')
               run: |
                   #export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig:$PKG_CONFIG_PATH"
-                  sudo ln -s /usr/local/opt/openblas/lib/libopenblas* /usr/local/lib/
+                  #sudo ln -s /usr/local/opt/openblas/lib/libopenblas* /usr/local/lib/
+                  brew install openblas
                   
             - name: Linux openblas
               if: contains( matrix.os, 'ubuntu')
