@@ -134,7 +134,7 @@ atomic = true
 
 [tool.cibuildwheel]
 skip = ["pp*", "cp36-*", "cp37-*", "cp38-*", "*-win32", "*-win_arm64"] #, "*-musllinux*"]
-build-frontend = { name = "build", args = ["-w","-n","-x"] }
+build-frontend = { name = "build", args = ["-w","-n"] }
 before-build = "pip install numpy ninja meson meson-python"
 build-verbosity = "3"
 
@@ -146,8 +146,10 @@ environment = { PKG_CONFIG_PATH="c:/opt/64/lib/pkgconfig" }
 [tool.cibuildwheel.windows]
 repair-wheel-command = "bash .github/tools/cibw_repair_wheel_command_windows.sh {wheel} {dest_dir}"
 
+# On an Linux Intel runner with qemu installed, build Intel and ARM wheels (aarch64) for Docker.  Ignoring: ppc64le s390x
 [tool.cibuildwheel.linux]
+archs = ["auto", "aarch64"]
 before-all = "yum install -y lapack lapack-devel blas blas-devel lapack64 lapack64-devel blas64 blas64-devel"
 
 [tool.cibuildwheel.macos]
-before-all = "brew install openblas"
+before-all = "brew install openblas blis lapack"
