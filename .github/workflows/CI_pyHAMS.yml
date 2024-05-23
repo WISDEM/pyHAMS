@@ -49,7 +49,7 @@ jobs:
             - name: Mac openmp
               if: contains( matrix.os, 'mac')
               run: |
-                  brew install clang llvm
+                  brew install llvm
 
             - name: Set compilers
               if: false == contains( matrix.os, 'windows')
