@@ -82,8 +82,8 @@ python_sources = [
   'pyhams.py',
 ]
 
-py3.install_sources(
-  python_sources,
-  pure: false,
-  subdir: 'pyhams'
-)
+#py3.install_sources(
+#  python_sources,
+#  pure: false,
+#  subdir: 'pyhams'
+#)
