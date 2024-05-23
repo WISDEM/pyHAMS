@@ -72,7 +72,7 @@ jobs:
               run: |
                   '${{ steps.cp.outputs.python-path }}' -m pip install --upgrade pip
                   '${{ steps.cp.outputs.python-path }}' -m pip install meson-python meson numpy ninja wheel setuptools
-                  '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation . -v
+                  '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation -e . -v
 
             - name: Test run
               run: |

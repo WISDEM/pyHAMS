@@ -61,7 +61,7 @@ if fc.get_id() in ['intel', 'intel-llvm']
 elif fc.get_id() in ['intel-cl', 'intel-llvm-cl']
   omp = declare_dependency(link_args: '/qopenmp')
 elif is_mac
-  omp = declare_dependency(link_args: ['-Xpreprocessor', '-fopenmp'])
+  omp = declare_dependency(link_args: ['-Xpreprocessor', '-Xclang', '-fopenmp'])
 else
   omp = declare_dependency(link_args: '-fopenmp')
 endif
