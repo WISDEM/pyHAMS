@@ -49,8 +49,7 @@ jobs:
             - name: Mac openmp
               if: contains( matrix.os, 'mac')
               run: |
-                  brew install libomp
-                  brew reinstall gcc
+                  brew install clang llvm
 
             - name: Set compilers
               if: false == contains( matrix.os, 'windows')
@@ -73,7 +72,7 @@ jobs:
               run: |
                   '${{ steps.cp.outputs.python-path }}' -m pip install --upgrade pip
                   '${{ steps.cp.outputs.python-path }}' -m pip install meson-python meson numpy ninja wheel
-                  '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation -e . -v
+                  '${{ steps.cp.outputs.python-path }}' -m pip install --no-build-isolation . -v
 
             - name: Test run
               run: |
@@ -110,13 +109,10 @@ jobs:
                   auto-activate-base: false
 
             # Install dependencies of WISDEM specific to windows
-            # NOTE: If you install m2w64-toolchain, it includes m2w64-pkgconfig which supercedes the conda one
-            # The m2w64 pkgconfig fails to find openblas and the install fails
-            # By only including these compiler packages, the build succeeds
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
-                  conda install -y m2w64-binutils m2w64-gcc m2w64-gcc-libgfortran m2w64-gcc-fortran libpython libgomp
+                  conda install -y m2w64-toolchain libpython
                   
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies unix specific
