@@ -70,7 +70,7 @@ hams_sources = ['src/WavDynMods.f90',
 py3.extension_module('_hams',
                      hams_sources,
                      hams_connect,
-                     dependencies : [fortranobject_dep, lapack, omp],
+                     dependencies : [fortranobject_dep, omp],
                      subdir: 'pyhams',
 		     link_language: 'fortran',
                      install : true)

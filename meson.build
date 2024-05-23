@@ -66,9 +66,6 @@ else
   omp = declare_dependency(link_args: '-fopenmp')
 endif
 
-# Need lapack via OpenBlas preferably
-lapack = dependency('openblas', ['mkl', 'mkl_rt', 'mkl-sdl'], 'lapack', 'blis', 'blas', 'accelerate', required: true)
-
 # https://mesonbuild.com/Python-module.html
 # Here we differentiate from the python used by meson, py3_command, and that python target, py3_target. This is useful
 # when cross compiling like on conda-forge

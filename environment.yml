@@ -8,8 +8,6 @@ dependencies:
   - meson-python
   - ninja
   - numpy
-  - openblas
-  - openmp
   - pip
   - pkg-config
   - python

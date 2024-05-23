@@ -1,5 +1,5 @@
 # Sources in specific dependency order
-SRCS = WavDynMods.f90 PatclVelct.f90 BodyIntgr.f90 BodyIntgr_irr.f90 AssbMatx.f90 AssbMatx_irr.f90 \
+SRCS = HAMS_LAPACK.f90 WavDynMods.f90 PatclVelct.f90 BodyIntgr.f90 BodyIntgr_irr.f90 AssbMatx.f90 AssbMatx_irr.f90 \
 SingularIntgr.f90 InfGreen_Appr.f90 FinGrnExtSubs.f90 FinGreen3D.f90 CalGreenFunc.f90 NormalProcess.f90 ReadPanelMesh.f90 \
 HydroStatic.f90 ImplementSubs.f90 InputFiles.f90 PotentWavForce.f90 \
 PressureElevation.f90 PrintOutput.f90 SolveMotion.f90 WavDynSubs.f90 HAMS_Prog.f90 
@@ -20,17 +20,14 @@ ifeq ($(FC), f77)
 endif
 
 ifeq ($(FC), ifort)
-	FLFLAGS = -g -xHost -fopenmp -qmkl
-	FCFLAGS = -g -xHost -c -O3 -fPIC -check bounds,pointers -warn all -fopenmp -qmkl
-	LDCOMP  = -lmkl_rt
+	FLFLAGS = -g -xHost -fopenmp
+	FCFLAGS = -g -xHost -c -O3 -fPIC -check bounds,pointers -warn all -fopenmp
 else ifeq ($(FC), ifx)
-	FLFLAGS = -g -xHost -fopenmp -qmkl
-	FCFLAGS = -g -xHost -c -O3 -fPIC -check bounds,pointers -warn all -fopenmp -qmkl
-	LDCOMP  = -lmkl_rt
+	FLFLAGS = -g -xHost -fopenmp
+	FCFLAGS = -g -xHost -c -O3 -fPIC -check bounds,pointers -warn all -fopenmp
 else
 	FLFLAGS = -g -march=native -mtune=native -fopenmp
 	FCFLAGS = -g -march=native -mtune=native -c -O3 -fPIC -fopenmp -fdec-math -fcheck=bounds,mem,pointer -Wall
-	LDCOMP  = -llapack
 endif
 PROGRAM = hams
 PRG_OBJ = $(PROGRAM).o
