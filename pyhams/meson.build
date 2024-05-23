@@ -43,7 +43,8 @@ hams_connect = custom_target('_hamsmodule.c',
 			               '@INPUT@', '--lower', '--build-dir', 'pyhams']
                             )
 
-hams_sources = ['src/WavDynMods.f90',
+hams_sources = ['src/HAMS_LAPACK.f90',
+                'src/WavDynMods.f90',
                 'src/PatclVelct.f90',
                 'src/BodyIntgr.f90',
                 'src/BodyIntgr_irr.f90',
