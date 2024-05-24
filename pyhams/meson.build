@@ -11,6 +11,9 @@ if incdir_numpy == 'not-given'
 endif
 # this creates a raw string which is useful for Windows use of '\' for paths
 incdir_numpy = '''@0@'''.format(incdir_numpy)
+inc_np = include_directories(incdir_numpy)
+numpy_nodepr_api = ['-DNPY_NO_DEPRECATED_API=NPY_1_9_API_VERSION']
+np_dep = declare_dependency(include_directories: inc_np, compile_args: numpy_nodepr_api)
 
 #incdir_f2py = run_command(py3,
 #    ['-c', 'import os; os.chdir(".."); import numpy.f2py; print(numpy.f2py.get_include())'],
@@ -18,10 +21,20 @@ incdir_numpy = '''@0@'''.format(incdir_numpy)
 #).stdout().strip()
 
 incdir_f2py = incdir_numpy / '..' / '..' / 'f2py' / 'src'
-inc_f2py = include_directories(incdir_f2py)
 fortranobject_c = incdir_f2py / 'fortranobject.c'
+inc_f2py = include_directories(incdir_f2py)
 
-inc_np = include_directories(incdir_numpy, incdir_f2py)
+# Share this object across multiple modules.
+fortranobject_lib = static_library('_fortranobject',
+  fortranobject_c,
+  c_args: numpy_nodepr_api,
+  dependencies: py3_dep,
+  include_directories: [inc_np, inc_f2py],
+)
+fortranobject_dep = declare_dependency(
+  link_with: fortranobject_lib,
+  include_directories: [inc_np, inc_f2py],
+)
 
 hams_connect = custom_target('_hamsmodule.c',
                              input : ['src/_hams.pyf'],
@@ -30,7 +43,8 @@ hams_connect = custom_target('_hamsmodule.c',
 			               '@INPUT@', '--lower', '--build-dir', 'pyhams']
                             )
 
-hams_sources = ['src/WavDynMods.f90',
+hams_sources = ['src/HAMS_LAPACK.f90',
+                'src/WavDynMods.f90',
                 'src/PatclVelct.f90',
                 'src/BodyIntgr.f90',
                 'src/BodyIntgr_irr.f90',
@@ -54,13 +68,10 @@ hams_sources = ['src/WavDynMods.f90',
                 'src/HAMS_Prog.f90',
                ]
 
-# Source order is important for dependencies
 py3.extension_module('_hams',
                      hams_sources,
                      hams_connect,
-                     fortranobject_c,
-                     include_directories: inc_np,
-                     dependencies : [py3_dep, lapack, omp],
+                     dependencies : [fortranobject_dep, omp],
                      subdir: 'pyhams',
 		     link_language: 'fortran',
                      install : true)
@@ -71,8 +82,8 @@ python_sources = [
   'pyhams.py',
 ]
 
-py3.install_sources(
-  python_sources,
-  pure: false,
-  subdir: 'pyhams'
-)
+#py3.install_sources(
+#  python_sources,
+#  pure: false,
+#  subdir: 'pyhams'
+#)

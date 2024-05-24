@@ -375,7 +375,10 @@
              STATUS='UNKNOWN')
         OPEN(206,FILE='Output/Hydrostar_format/Motion_6.rao',&
              STATUS='UNKNOWN')
-!          
+
+        ! This one isn't otherwise closed
+        CLOSE(9)
+        
       END Subroutine ReadOpenFiles
  
 

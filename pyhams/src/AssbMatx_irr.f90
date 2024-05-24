@@ -23,6 +23,7 @@
 MODULE AssbMatx_irr
 
    USE HAMS_mod
+   USE HAMS_LAPACK
    USE Body_mod
    USE Const_mod
    USE WaveDyn_mod

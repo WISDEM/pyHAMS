@@ -1,10 +1,10 @@
 [build-system]
-build-backend = 'mesonpy'
-requires = ["meson-python", "meson>=1.1", "numpy", "ninja", "wheel"]
+requires = ["setuptools", "numpy", "ninja", "meson>=1.1", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyHAMS"
-version = "1.2.6"
+version = "1.3.0"
 description = "Python module wrapping around HAMS"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -36,6 +36,7 @@ classifiers = [  # Optional
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Fortran",
   "Operating System :: Microsoft :: Windows",
@@ -77,24 +78,25 @@ source = "https://github.com/WISDEM/pyHAMS"
 download = "https://github.com/WISDEM/pyHAMS/releases"
 tracker = "https://github.com/WISDEM/pyHAMS/issues"
 
-[tool.meson-python.args]
-setup = ['--python.install-env=auto']
-install = ['--tags=runtime,python-runtime,bin']
+# This is configuration specific to the `meson-python` build backend.
+#[tool.meson-python.args]
+#setup = ['--python.install-env=auto']
+#install = ['--tags=runtime,python-runtime,bin']
 
 # This is configuration specific to the `setuptools` build backend.
 # If you are using a different build backend, you will need to change this.
-#[tool.setuptools]
-#zip-safe = false
-#include-package-data = true
+[tool.setuptools]
+zip-safe = false
+include-package-data = true
 
-#[tool.setuptools.packages.find]
-#exclude = ["Cylinder", "test"]
-#namespaces = true
+[tool.setuptools.packages.find]
+exclude = ["Cylinder", "test"]
+namespaces = true
 
-#[tool.setuptools.package-data]
+[tool.setuptools.package-data]
 # If there are data files included in your packages that need to be
 # installed, specify them here.
-#"*" = ["*.yaml", "*.xlsx", "*.txt", "*.so", "*.lib", "*.pyd", "*.pdb", "*.dylib", "*.dll", "*.exe"]
+"*" = ["*.yaml", "*.xlsx", "*.txt", "*.so", "*.lib", "*.pyd", "*.pdb", "*.dylib", "*.dll", "*.exe"]
 
 [tool.black]
 line-length = 120
@@ -132,11 +134,19 @@ atomic = true
 #src_paths=isort,test
 
 [tool.cibuildwheel]
-skip = ["cp36-*", "cp37-*", "cp38-*", "*win*"]
-build-frontend = "build"
+skip = ["pp*", "cp36-*", "cp37-*", "cp38-*", "*-win32", "*-win_arm64"] #, "*-musllinux*"]
+build-frontend = { name = "build", args = ["-w","-n"] }
+before-build = "pip install numpy ninja meson meson-python setuptools wheel"
+build-verbosity = "3"
 
+# https://github.com/pdfo/pdfo
+[[tool.cibuildwheel.overrides]]
+select = "*-win_amd64"
+environment = { PKG_CONFIG_PATH="c:/opt/64/lib/pkgconfig" }
+
+[tool.cibuildwheel.windows]
+repair-wheel-command = "bash .github/tools/cibw_repair_wheel_command_windows.sh {wheel} {dest_dir}"
+
+# On an Linux Intel runner with qemu installed, build Intel and ARM wheels (aarch64) for Docker.  Ignoring: ppc64le s390x
 [tool.cibuildwheel.linux]
-before-all = "yum install -y lapack lapack-devel blas blas-devel lapack64 lapack64-devel blas64 blas64-devel"
-
-[tool.cibuildwheel.macos]
-before-all = "brew install openblas"
+archs = ["auto", "aarch64"]
