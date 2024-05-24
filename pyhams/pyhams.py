@@ -321,13 +321,17 @@ def read_wamit1(pathWamit1, TFlag=0):
     pathWamit1 = osp.normpath(pathWamit1)
     # Check if the file contains the infinite and zero frequency points
     try:
-        freq_test = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=72)
-        if np.array_equal(np.unique(freq_test[:,0]), np.array([-1.0, 0.0])):
-            other_freqs = np.loadtxt(pathWamit1, usecols=(0,1,2,3,4), skiprows=72)
-            freq_test   = np.c_[freq_test, np.nan*np.ones(72)]
-            wamit1      = np.vstack((freq_test, other_freqs))
-        else:
-            wamit1 = np.loadtxt(pathWamit1)
+        # extract the first 72 rows to see how many are infinite and zero
+        freq_test = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=73)  # add one extra (73) for formatting/syntax
+        # find the row in the file that is not a zero or infinite frequency
+        for i in range(len(freq_test)):     
+            if freq_test[i,0] != 0.0 and freq_test[i,0] != -1.0:
+                break
+        # create new arrays based on the number of nonzero values in the matrices
+        inf_zero_freqs = np.loadtxt(pathWamit1, usecols=(0,1,2,3), max_rows=i)
+        other_freqs = np.loadtxt(pathWamit1, usecols=(0,1,2,3,4), skiprows=i)
+        inf_zero_freqs_full   = np.c_[inf_zero_freqs, np.nan*np.ones(i)]
+        wamit1      = np.vstack((inf_zero_freqs_full, other_freqs))
     except:
         wamit1 = np.loadtxt(pathWamit1)
 
