@@ -15,13 +15,13 @@ jobs:
         strategy:
             fail-fast: false #true
             matrix:
-                os: ["ubuntu-latest", "macOS-latest"] #, "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11", "3.12"]
+                os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
+                python-version: ["3.10", "3.11", "3.12"]
 
         steps:
             - name: Setup GNU Fortran
               if: false == contains( matrix.os, 'windows')
-              uses: awvwgk/setup-fortran@v1
+              uses: fortran-lang/setup-fortran@v1.6
 
             - name: Install compiler
               if: false == contains( matrix.os, 'windows')
@@ -90,17 +90,16 @@ jobs:
         strategy:
             fail-fast: false #true
             matrix:
-                os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11", "3.12"]
+                os: ["ubuntu-latest", "macOS-13", "macOS-14", "windows-latest"] #mac-13 intel, mac-14 arm
+                python-version: ["3.10", "3.11", "3.12"]
 
         steps:
             - name: checkout repository
               uses: actions/checkout@v4
 
-            - uses: conda-incubator/setup-miniconda@v2
+            - uses: conda-incubator/setup-miniconda@v3
               # https://github.com/marketplace/actions/setup-miniconda
               with:
-                  #mamba-version: "*"
                   miniforge-version: "latest"
                   auto-update-conda: true
                   python-version: ${{ matrix.python-version }}
@@ -112,7 +111,7 @@ jobs:
             - name: Add dependencies windows specific
               if: contains( matrix.os, 'windows')
               run: |
-                  conda install -y m2w64-toolchain libpython
+                  conda install -y gfortran gcc libpython
                   
             # Install dependencies of WISDEM specific to windows
             - name: Add dependencies unix specific
