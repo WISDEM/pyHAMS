@@ -94,16 +94,5 @@ class CertTest(unittest.TestCase):
         #npt.assert_array_almost_equal(truth3, actual3)
 
 
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(CertTest))
-    return suite
-
 if __name__ == '__main__':
-    result = unittest.TextTestRunner().run(suite())
-
-    if result.wasSuccessful():
-        exit(0)
-    else:
-        exit(1)
-
+    unittest.main()
