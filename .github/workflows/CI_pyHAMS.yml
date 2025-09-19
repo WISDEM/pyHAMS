@@ -97,7 +97,8 @@ jobs:
             - name: checkout repository
               uses: actions/checkout@v5
 
-            - uses: conda-incubator/setup-miniconda@v2
+            - name: Install miniconda
+              uses: conda-incubator/setup-miniconda@v3
               # https://github.com/marketplace/actions/setup-miniconda
               with:
                   #mamba-version: "*"
@@ -118,13 +119,13 @@ jobs:
             - name: Add dependencies unix specific
               if: contains( matrix.os, 'ubuntu')
               run: |
-                  conda install -y libgomp
+                  conda install -y libgomp gfortran
                   gfortran --version
 
             - name: Add dependencies mac specific
               if: contains( matrix.os, 'mac')
               run: |
-                  conda install -y compilers llvm-openmp
+                  conda install -y gfortran llvm-openmp
                   gfortran --version
 
             # Install 
