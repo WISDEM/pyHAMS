@@ -16,7 +16,7 @@ jobs:
             fail-fast: false #true
             matrix:
                 os: ["ubuntu-latest", "macOS-latest"] #, "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11", "3.12"]
+                python-version: ["3.10", "3.11", "3.12", "3.13"]
 
         steps:
             - name: Setup GNU Fortran
@@ -44,7 +44,7 @@ jobs:
                       mingw-w64-x86_64-gcc-fortran
               
             - name: checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
                   
             - name: Mac openmp
               if: contains( matrix.os, 'mac')
@@ -58,7 +58,7 @@ jobs:
                   echo "CXX=${{ steps.install_cc.outputs.cxx }}" >> $GITHUB_ENV
 
             - name: Set up Python ${{ matrix.python-version }}
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@v6
               id: cp
               with:
                   python-version: ${{ matrix.python-version }}
@@ -91,11 +91,11 @@ jobs:
             fail-fast: false #true
             matrix:
                 os: ["ubuntu-latest", "macOS-latest", "windows-latest"]
-                python-version: ["3.9", "3.10", "3.11", "3.12"]
+                python-version: ["3.10", "3.11", "3.12", "3.13"]
 
         steps:
             - name: checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - uses: conda-incubator/setup-miniconda@v2
               # https://github.com/marketplace/actions/setup-miniconda
